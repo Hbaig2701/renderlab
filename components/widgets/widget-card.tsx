@@ -1,0 +1,154 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { MoreVertical, Copy, ExternalLink, BarChart3, Edit, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { WIDGET_TEMPLATES, type Widget } from '@/types';
+
+interface WidgetCardProps {
+  widget: Widget;
+}
+
+export function WidgetCard({ widget }: WidgetCardProps) {
+  const [status, setStatus] = useState(widget.status);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
+  const template = WIDGET_TEMPLATES[widget.template];
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
+  const toggleStatus = async () => {
+    setLoading(true);
+    const newStatus = status === 'active' ? 'inactive' : 'active';
+
+    const { error } = await supabase
+      .from('widgets')
+      .update({ status: newStatus })
+      .eq('id', widget.id);
+
+    if (error) {
+      toast.error('Failed to update widget status');
+    } else {
+      setStatus(newStatus);
+      toast.success(`Widget ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
+    }
+    setLoading(false);
+  };
+
+  const copyEmbedCode = () => {
+    const embedCode = `<iframe src="${appUrl}/w/${widget.id}" width="100%" height="600" frameborder="0" allow="camera"></iframe>`;
+    navigator.clipboard.writeText(embedCode);
+    toast.success('Embed code copied to clipboard');
+  };
+
+  const copyDirectLink = () => {
+    navigator.clipboard.writeText(`${appUrl}/w/${widget.id}`);
+    toast.success('Direct link copied to clipboard');
+  };
+
+  const deleteWidget = async () => {
+    if (!confirm('Are you sure you want to delete this widget?')) return;
+
+    const { error } = await supabase.from('widgets').delete().eq('id', widget.id);
+
+    if (error) {
+      toast.error('Failed to delete widget');
+    } else {
+      toast.success('Widget deleted');
+      router.refresh();
+    }
+  };
+
+  return (
+    <Card className="bg-card border-border">
+      <CardHeader className="flex flex-row items-start justify-between pb-2">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-lg flex items-center justify-center text-xl"
+            style={{ backgroundColor: widget.brand_color + '20' }}
+          >
+            {template.icon}
+          </div>
+          <div>
+            <h3 className="font-semibold">{widget.client_name}</h3>
+            <p className="text-sm text-muted-foreground">{template.name}</p>
+          </div>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={copyEmbedCode}>
+              <Copy className="mr-2 h-4 w-4" />
+              Copy embed code
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={copyDirectLink}>
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Copy direct link
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/widgets/${widget.id}`}>
+                <BarChart3 className="mr-2 h-4 w-4" />
+                View analytics
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/widgets/${widget.id}/edit`}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={deleteWidget} className="text-destructive">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete widget
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardHeader>
+      <CardContent className="pb-3">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <code className="px-2 py-1 rounded bg-secondary font-mono text-xs">
+            {widget.id}
+          </code>
+        </div>
+      </CardContent>
+      <CardFooter className="flex items-center justify-between border-t border-border pt-3">
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={status === 'active'}
+            onCheckedChange={toggleStatus}
+            disabled={loading}
+          />
+          <Badge
+            variant={status === 'active' ? 'default' : 'secondary'}
+            className={status === 'active' ? 'bg-success' : ''}
+          >
+            {status}
+          </Badge>
+        </div>
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/w/${widget.id}`} target="_blank">
+            Preview
+            <ExternalLink className="ml-2 h-3 w-3" />
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
