@@ -1,0 +1,62 @@
+import { createClient } from '@/lib/supabase/server';
+import { NextResponse } from 'next/server';
+import { TIER_LIMITS, type SubscriptionTier } from '@/types';
+
+// ADMIN ONLY - Remove or protect before production
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const tier = searchParams.get('tier') as SubscriptionTier;
+
+  if (!tier || !['starter', 'pro', 'agency'].includes(tier)) {
+    return NextResponse.json({
+      error: 'Invalid tier. Use ?tier=starter, ?tier=pro, or ?tier=agency'
+    }, { status: 400 });
+  }
+
+  const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
+  }
+
+  const limits = TIER_LIMITS[tier];
+
+  // Update subscription
+  const { error: subError } = await supabase
+    .from('subscriptions')
+    .upsert({
+      user_id: user.id,
+      tier,
+      status: 'active',
+    }, { onConflict: 'user_id' });
+
+  if (subError) {
+    return NextResponse.json({ error: subError.message }, { status: 500 });
+  }
+
+  // Update usage limits
+  const today = new Date().toISOString().split('T')[0];
+  const { error: usageError } = await supabase
+    .from('usage')
+    .upsert({
+      user_id: user.id,
+      period_start: today,
+      enhancement_limit: limits.enhancement_limit,
+      widget_transform_limit: limits.widget_transform_limit,
+    }, { onConflict: 'user_id,period_start' });
+
+  if (usageError) {
+    return NextResponse.json({ error: usageError.message }, { status: 500 });
+  }
+
+  return NextResponse.json({
+    success: true,
+    tier,
+    limits: {
+      enhancements: limits.enhancement_limit,
+      active_widgets: limits.active_widgets,
+      widget_transforms: limits.widget_transform_limit,
+    }
+  });
+}
