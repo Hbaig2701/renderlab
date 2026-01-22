@@ -1,21 +1,34 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { stripe, getTierFromPriceId, isStripeConfigured } from '@/lib/stripe/client';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import { TIER_LIMITS } from '@/types';
 
-// Use service role for webhook (no user context)
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Create Supabase client lazily (not at module load time)
+function getSupabaseAdmin() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return null;
+  }
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
 
 export async function POST(request: Request) {
   // Check if Stripe is configured
   if (!isStripeConfigured || !stripe) {
     return NextResponse.json(
       { error: 'Billing is not configured yet' },
+      { status: 503 }
+    );
+  }
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return NextResponse.json(
+      { error: 'Database not configured' },
       { status: 503 }
     );
   }
@@ -45,25 +58,25 @@ export async function POST(request: Request) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
-        await handleCheckoutComplete(session);
+        await handleCheckoutComplete(supabase, session);
         break;
       }
 
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription;
-        await handleSubscriptionUpdate(subscription);
+        await handleSubscriptionUpdate(supabase, subscription);
         break;
       }
 
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription;
-        await handleSubscriptionDeleted(subscription);
+        await handleSubscriptionDeleted(supabase, subscription);
         break;
       }
 
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
-        await handlePaymentFailed(invoice);
+        await handlePaymentFailed(supabase, invoice);
         break;
       }
 
@@ -81,7 +94,8 @@ export async function POST(request: Request) {
   }
 }
 
-async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function handleCheckoutComplete(supabase: SupabaseClient<any, any, any>, session: Stripe.Checkout.Session) {
   const userId = session.metadata?.user_id;
   const tier = session.metadata?.tier as 'starter' | 'pro' | 'agency';
 
@@ -133,7 +147,8 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   console.log(`[Webhook] Checkout complete for user ${userId}, tier: ${tier}`);
 }
 
-async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function handleSubscriptionUpdate(supabase: SupabaseClient<any, any, any>, subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string;
 
   // Find user by customer ID
@@ -182,7 +197,8 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   console.log(`[Webhook] Subscription updated for user ${sub.user_id}, tier: ${tier}, status: ${status}`);
 }
 
-async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function handleSubscriptionDeleted(supabase: SupabaseClient<any, any, any>, subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string;
 
   // Find user by customer ID
@@ -205,7 +221,8 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   console.log(`[Webhook] Subscription canceled for user ${sub.user_id}`);
 }
 
-async function handlePaymentFailed(invoice: Stripe.Invoice) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function handlePaymentFailed(supabase: SupabaseClient<any, any, any>, invoice: Stripe.Invoice) {
   const customerId = invoice.customer as string;
 
   // Find user by customer ID
