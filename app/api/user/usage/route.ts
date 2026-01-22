@@ -40,11 +40,11 @@ export async function GET() {
     const enhancementByDate: Record<string, number> = {};
     const widgetByDate: Record<string, number> = {};
 
-    enhancementDaily?.forEach((row) => {
+    enhancementDaily?.forEach((row: { date: string }) => {
       enhancementByDate[row.date] = (enhancementByDate[row.date] || 0) + 1;
     });
 
-    widgetDaily?.forEach((row) => {
+    widgetDaily?.forEach((row: { date: string }) => {
       widgetByDate[row.date] = (widgetByDate[row.date] || 0) + 1;
     });
 

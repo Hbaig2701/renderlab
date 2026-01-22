@@ -25,7 +25,6 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
   const [ctaText, setCtaText] = useState(widget?.cta_text || 'See Your Transformation');
   const [enabledOptions, setEnabledOptions] = useState<string[]>([]);
   const router = useRouter();
-  const supabase = createClient();
 
   const isEditing = !!widget;
   const isHairTemplate = template === 'hair';
@@ -75,6 +74,9 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
       enabled_options: optionsToStore,
       user_id: userId,
     };
+
+    // Create client inside handler to avoid build-time execution
+    const supabase = createClient();
 
     if (isEditing) {
       const { error } = await supabase

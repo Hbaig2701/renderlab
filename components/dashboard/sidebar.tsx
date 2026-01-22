@@ -27,9 +27,10 @@ const navigation = [
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const supabase = createClient();
 
   const handleLogout = async () => {
+    // Create client inside handler to avoid build-time execution
+    const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/login');
     router.refresh();

@@ -41,8 +41,8 @@ export default async function WidgetsPage() {
       {/* Widgets Grid */}
       {widgets && widgets.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {widgets.map((widget) => (
-            <WidgetCard key={widget.id} widget={widget as Widget} />
+          {widgets.map((widget: Widget) => (
+            <WidgetCard key={widget.id} widget={widget} />
           ))}
         </div>
       ) : (

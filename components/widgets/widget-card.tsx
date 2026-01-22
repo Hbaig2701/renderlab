@@ -26,7 +26,6 @@ export function WidgetCard({ widget }: WidgetCardProps) {
   const [status, setStatus] = useState(widget.status);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
   const template = WIDGET_TEMPLATES[widget.template];
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
@@ -34,6 +33,8 @@ export function WidgetCard({ widget }: WidgetCardProps) {
     setLoading(true);
     const newStatus = status === 'active' ? 'inactive' : 'active';
 
+    // Create client inside handler to avoid build-time execution
+    const supabase = createClient();
     const { error } = await supabase
       .from('widgets')
       .update({ status: newStatus })
@@ -62,6 +63,8 @@ export function WidgetCard({ widget }: WidgetCardProps) {
   const deleteWidget = async () => {
     if (!confirm('Are you sure you want to delete this widget?')) return;
 
+    // Create client inside handler to avoid build-time execution
+    const supabase = createClient();
     const { error } = await supabase.from('widgets').delete().eq('id', widget.id);
 
     if (error) {

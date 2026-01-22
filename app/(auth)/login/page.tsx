@@ -16,13 +16,14 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    // Create client inside handler to avoid build-time execution
+    const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -32,6 +33,32 @@ export default function LoginPage() {
       setError(error.message);
       setLoading(false);
       return;
+    }
+
+    router.push('/dashboard');
+    router.refresh();
+  };
+
+  const handleQuickLogin = async () => {
+    setLoading(true);
+    // Create client inside handler to avoid build-time execution
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: 'test@renderlab.dev',
+      password: 'testpass123',
+    });
+
+    if (error) {
+      // Create test account if it doesn't exist
+      await supabase.auth.signUp({
+        email: 'test@renderlab.dev',
+        password: 'testpass123',
+      });
+      await supabase.auth.signInWithPassword({
+        email: 'test@renderlab.dev',
+        password: 'testpass123',
+      });
     }
 
     router.push('/dashboard');
@@ -85,26 +112,7 @@ export default function LoginPage() {
             type="button"
             variant="outline"
             className="w-full border-dashed border-yellow-500 text-yellow-500 hover:bg-yellow-500/10"
-            onClick={async () => {
-              setLoading(true);
-              const { error } = await supabase.auth.signInWithPassword({
-                email: 'test@renderlab.dev',
-                password: 'testpass123',
-              });
-              if (error) {
-                // Create test account if it doesn't exist
-                await supabase.auth.signUp({
-                  email: 'test@renderlab.dev',
-                  password: 'testpass123',
-                });
-                await supabase.auth.signInWithPassword({
-                  email: 'test@renderlab.dev',
-                  password: 'testpass123',
-                });
-              }
-              router.push('/dashboard');
-              router.refresh();
-            }}
+            onClick={handleQuickLogin}
             disabled={loading}
           >
             [DEV] Quick Login

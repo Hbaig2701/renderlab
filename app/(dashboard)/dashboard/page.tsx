@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Layers, Plus, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { TIER_LIMITS, type SubscriptionTier } from '@/types';
+import { TIER_LIMITS, type SubscriptionTier, type Widget } from '@/types';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -126,7 +126,7 @@ export default async function DashboardPage() {
         <CardContent>
           {recentWidgets && recentWidgets.length > 0 ? (
             <div className="space-y-3">
-              {recentWidgets.map((widget) => (
+              {recentWidgets.map((widget: Widget) => (
                 <Link
                   key={widget.id}
                   href={`/widgets/${widget.id}`}
