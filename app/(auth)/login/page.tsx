@@ -41,28 +41,49 @@ export default function LoginPage() {
 
   const handleQuickLogin = async () => {
     setLoading(true);
+    setError(null);
+
     // Create client inside handler to avoid build-time execution
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: 'test@renderlab.dev',
-      password: 'testpass123',
-    });
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: 'test@renderlab.dev',
+        password: 'testpass123',
+      });
 
-    if (error) {
-      // Create test account if it doesn't exist
-      await supabase.auth.signUp({
-        email: 'test@renderlab.dev',
-        password: 'testpass123',
-      });
-      await supabase.auth.signInWithPassword({
-        email: 'test@renderlab.dev',
-        password: 'testpass123',
-      });
+      if (signInError) {
+        // Create test account if it doesn't exist
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: 'test@renderlab.dev',
+          password: 'testpass123',
+        });
+
+        if (signUpError) {
+          setError(`Sign up failed: ${signUpError.message}`);
+          setLoading(false);
+          return;
+        }
+
+        // Try signing in again after signup
+        const { error: retryError } = await supabase.auth.signInWithPassword({
+          email: 'test@renderlab.dev',
+          password: 'testpass123',
+        });
+
+        if (retryError) {
+          setError(`Login failed: ${retryError.message}`);
+          setLoading(false);
+          return;
+        }
+      }
+
+      router.push('/dashboard');
+      router.refresh();
+    } catch (err) {
+      setError(`Unexpected error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      setLoading(false);
     }
-
-    router.push('/dashboard');
-    router.refresh();
   };
 
   return (
