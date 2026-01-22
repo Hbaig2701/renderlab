@@ -122,7 +122,8 @@ export async function POST(request: Request, { params }: RouteParams) {
           model: 'gemini-2.0-flash-exp',
           generationConfig: {
             responseModalities: ['image', 'text'],
-          } as any,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as unknown as any,
         });
 
         // Extract base64 data from data URL
@@ -148,6 +149,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         console.log(`[Transform] Response candidates: ${response.candidates?.length || 0}`);
         if (response.candidates?.[0]?.content?.parts) {
           console.log(`[Transform] Parts: ${response.candidates[0].content.parts.length}`);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           response.candidates[0].content.parts.forEach((part: any, i: number) => {
             console.log(`[Transform] Part ${i}: ${part.text ? 'text' : part.inlineData ? 'image' : 'unknown'}`);
           });
@@ -156,8 +158,10 @@ export async function POST(request: Request, { params }: RouteParams) {
         // Check if we got an image back
         if (response.candidates && response.candidates[0]?.content?.parts) {
           for (const part of response.candidates[0].content.parts) {
-            if ((part as any).inlineData) {
-              const imageData = (part as any).inlineData;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const partAny = part as any;
+            if (partAny.inlineData) {
+              const imageData = partAny.inlineData;
               transformedImage = `data:${imageData.mimeType};base64,${imageData.data}`;
               imageGenerated = true;
               console.log(`[Transform] Image generated successfully`);

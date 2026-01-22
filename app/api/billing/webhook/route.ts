@@ -87,6 +87,11 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   // Get subscription details from Stripe
   const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId);
 
+  // In newer Stripe API, period dates are on subscription items
+  const firstItem = stripeSubscription.items.data[0];
+  const periodStartTimestamp = firstItem.current_period_start;
+  const periodEndTimestamp = firstItem.current_period_end;
+
   // Update subscription in database
   await supabase.from('subscriptions').upsert({
     user_id: userId,
@@ -94,16 +99,16 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
     stripe_subscription_id: subscriptionId,
     tier,
     status: 'active',
-    current_period_start: new Date(stripeSubscription.current_period_start * 1000).toISOString(),
-    current_period_end: new Date(stripeSubscription.current_period_end * 1000).toISOString(),
+    current_period_start: new Date(periodStartTimestamp * 1000).toISOString(),
+    current_period_end: new Date(periodEndTimestamp * 1000).toISOString(),
   }, {
     onConflict: 'user_id',
   });
 
   // Create or update usage record for the new period
   const limits = TIER_LIMITS[tier];
-  const periodStart = new Date(stripeSubscription.current_period_start * 1000);
-  const periodEnd = new Date(stripeSubscription.current_period_end * 1000);
+  const periodStart = new Date(periodStartTimestamp * 1000);
+  const periodEnd = new Date(periodEndTimestamp * 1000);
 
   await supabase.from('usage').upsert({
     user_id: userId,
@@ -145,16 +150,21 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   else if (subscription.status === 'past_due') status = 'past_due';
   else if (subscription.status === 'trialing') status = 'trialing';
 
+  // In newer Stripe API, period dates are on subscription items
+  const firstItem = subscription.items.data[0];
+  const periodStartTimestamp = firstItem.current_period_start;
+  const periodEndTimestamp = firstItem.current_period_end;
+
   await supabase.from('subscriptions').update({
     tier,
     status,
-    current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-    current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    current_period_start: new Date(periodStartTimestamp * 1000).toISOString(),
+    current_period_end: new Date(periodEndTimestamp * 1000).toISOString(),
   }).eq('user_id', sub.user_id);
 
   // Update usage limits for the period
   const limits = TIER_LIMITS[tier];
-  const periodStart = new Date(subscription.current_period_start * 1000);
+  const periodStart = new Date(periodStartTimestamp * 1000);
 
   await supabase.from('usage').update({
     enhancement_limit: limits.enhancement_limit,

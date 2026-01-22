@@ -95,7 +95,8 @@ export async function POST(request: Request) {
           model: 'gemini-2.0-flash-exp',
           generationConfig: {
             responseModalities: ['image', 'text'],
-          } as any,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as unknown as any,
         });
 
         // Extract base64 data from data URL
@@ -124,8 +125,10 @@ export async function POST(request: Request) {
         // Check if we got an image back
         if (response.candidates && response.candidates[0]?.content?.parts) {
           for (const part of response.candidates[0].content.parts) {
-            if ((part as any).inlineData) {
-              const imageData = (part as any).inlineData;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const partAny = part as any;
+            if (partAny.inlineData) {
+              const imageData = partAny.inlineData;
               enhancedImage = `data:${imageData.mimeType};base64,${imageData.data}`;
               console.log(`[Enhance] Image generated successfully`);
               break;

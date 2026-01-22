@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -63,7 +63,7 @@ const TIER_FEATURES: Record<SubscriptionTier, {
   },
 };
 
-export default function BillingPage() {
+function BillingPageContent() {
   const searchParams = useSearchParams();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -113,7 +113,7 @@ export default function BillingPage() {
       if (url) {
         window.location.href = url;
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to create checkout session');
     }
     setCheckoutLoading(null);
@@ -136,7 +136,7 @@ export default function BillingPage() {
       if (url) {
         window.location.href = url;
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to open billing portal');
     }
     setPortalLoading(false);
@@ -318,5 +318,17 @@ export default function BillingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BillingPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <BillingPageContent />
+    </Suspense>
   );
 }
