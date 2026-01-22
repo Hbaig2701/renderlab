@@ -3,10 +3,11 @@ import { redirect, notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Copy, ExternalLink, Edit, BarChart3 } from 'lucide-react';
+import { ExternalLink, Edit } from 'lucide-react';
 import Link from 'next/link';
-import { WIDGET_TEMPLATES, type Widget } from '@/types';
+import { WIDGET_TEMPLATES } from '@/types';
 import { EmbedCodeDisplay } from '@/components/widgets/embed-code-modal';
+import { ROIReportButton } from '@/components/widgets/roi-report-button';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -76,6 +77,14 @@ export default async function WidgetDetailPage({ params }: PageProps) {
           </div>
         </div>
         <div className="flex gap-2">
+          <ROIReportButton
+            widgetId={widget.id}
+            clientName={widget.client_name}
+            templateName={template.name}
+            totalTransforms={totalTransforms || 0}
+            weekTransforms={weekTransforms || 0}
+            createdAt={widget.created_at}
+          />
           <Button variant="outline" asChild>
             <Link href={`/w/${widget.id}`} target="_blank">
               <ExternalLink className="mr-2 h-4 w-4" />

@@ -1,22 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { generateWidgetId } from '@/lib/utils/generate-id';
-import { WIDGET_TEMPLATES, type WidgetTemplate, type Widget } from '@/types';
+import { WIDGET_TEMPLATES, TEMPLATE_OPTIONS, HAIR_CATEGORIES, type WidgetTemplate, type Widget } from '@/types';
 
 interface WidgetFormProps {
   widget?: Widget;
@@ -29,20 +23,56 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
   const [clientName, setClientName] = useState(widget?.client_name || '');
   const [brandColor, setBrandColor] = useState(widget?.brand_color || '#F59E0B');
   const [ctaText, setCtaText] = useState(widget?.cta_text || 'See Your Transformation');
+  const [enabledOptions, setEnabledOptions] = useState<string[]>([]);
   const router = useRouter();
   const supabase = createClient();
 
   const isEditing = !!widget;
+  const isHairTemplate = template === 'hair';
+
+  // Get available options for selected template
+  const templateOptions = TEMPLATE_OPTIONS[template] || [];
+
+  // Initialize enabled options when template changes or on mount
+  useEffect(() => {
+    if (widget?.enabled_options) {
+      setEnabledOptions(widget.enabled_options);
+    } else {
+      // Default: all options enabled
+      setEnabledOptions(templateOptions.map(o => o.key));
+    }
+  }, [template]);
+
+  const toggleOption = (key: string) => {
+    setEnabledOptions(prev => {
+      if (prev.includes(key)) {
+        // Don't allow disabling all options
+        if (prev.length === 1) {
+          toast.error('At least one option must be enabled');
+          return prev;
+        }
+        return prev.filter(k => k !== key);
+      } else {
+        return [...prev, key];
+      }
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    // If all options are enabled, store null (default behavior)
+    const optionsToStore = enabledOptions.length === templateOptions.length
+      ? null
+      : enabledOptions;
 
     const widgetData = {
       template,
       client_name: clientName,
       brand_color: brandColor,
       cta_text: ctaText,
+      enabled_options: optionsToStore,
       user_id: userId,
     };
 
@@ -53,7 +83,8 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
         .eq('id', widget.id);
 
       if (error) {
-        toast.error('Failed to update widget');
+        console.error('Widget update error:', error);
+        toast.error(`Failed to update widget: ${error.message}`);
         setLoading(false);
         return;
       }
@@ -68,7 +99,8 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
       });
 
       if (error) {
-        toast.error('Failed to create widget');
+        console.error('Widget creation error:', error);
+        toast.error(`Failed to create widget: ${error.message}`);
         setLoading(false);
         return;
       }
@@ -78,6 +110,11 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
     }
 
     router.refresh();
+  };
+
+  // Group options by category for hair template
+  const getOptionsByCategory = (categoryKey: string) => {
+    return templateOptions.filter(o => o.category === categoryKey);
   };
 
   return (
@@ -93,7 +130,11 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
               ([key, value]) => (
                 <div
                   key={key}
-                  onClick={() => setTemplate(key)}
+                  onClick={() => {
+                    setTemplate(key);
+                    // Reset to all options when changing template
+                    setEnabledOptions(TEMPLATE_OPTIONS[key].map(o => o.key));
+                  }}
                   className={`p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                     template === key
                       ? 'border-primary bg-primary/5'
@@ -114,6 +155,74 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
         </CardContent>
       </Card>
 
+      {/* Transformation Options */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle>Transformation Options</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Choose which transformation styles are available on this widget
+          </p>
+        </CardHeader>
+        <CardContent>
+          {isHairTemplate ? (
+            // Hair template - grouped by category
+            <div className="space-y-6">
+              {Object.entries(HAIR_CATEGORIES).map(([categoryKey, categoryInfo]) => {
+                const categoryOptions = getOptionsByCategory(categoryKey);
+                if (categoryOptions.length === 0) return null;
+
+                return (
+                  <div key={categoryKey} className="space-y-3">
+                    <div className="flex items-center gap-2 pb-2 border-b border-border">
+                      <span className="text-lg">{categoryInfo.icon}</span>
+                      <h4 className="font-medium text-sm uppercase tracking-wide text-muted-foreground">
+                        {categoryInfo.label}
+                      </h4>
+                    </div>
+                    <div className="space-y-2">
+                      {categoryOptions.map((option) => (
+                        <div
+                          key={option.key}
+                          className="flex items-center justify-between p-3 rounded-lg bg-background border border-border"
+                        >
+                          <div>
+                            <p className="font-medium">{option.label}</p>
+                            <p className="text-sm text-muted-foreground">{option.description}</p>
+                          </div>
+                          <Switch
+                            checked={enabledOptions.includes(option.key)}
+                            onCheckedChange={() => toggleOption(option.key)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            // Other templates - flat list
+            <div className="space-y-4">
+              {templateOptions.map((option) => (
+                <div
+                  key={option.key}
+                  className="flex items-center justify-between p-3 rounded-lg bg-background border border-border"
+                >
+                  <div>
+                    <p className="font-medium">{option.label}</p>
+                    <p className="text-sm text-muted-foreground">{option.description}</p>
+                  </div>
+                  <Switch
+                    checked={enabledOptions.includes(option.key)}
+                    onCheckedChange={() => toggleOption(option.key)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Client Details */}
       <Card className="bg-card border-border">
         <CardHeader>
@@ -124,7 +233,7 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
             <Label htmlFor="clientName">Client Name</Label>
             <Input
               id="clientName"
-              placeholder="e.g., Smith Dental Clinic"
+              placeholder={isHairTemplate ? "e.g., Luxe Hair Studio" : "e.g., Smith Dental Clinic"}
               value={clientName}
               onChange={(e) => setClientName(e.target.value)}
               required
@@ -166,7 +275,7 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
             <Label htmlFor="ctaText">Call-to-Action Text</Label>
             <Input
               id="ctaText"
-              placeholder="See Your Transformation"
+              placeholder={isHairTemplate ? "Show Me" : "See Your Transformation"}
               value={ctaText}
               onChange={(e) => setCtaText(e.target.value)}
               className="bg-background"

@@ -46,11 +46,12 @@ CREATE TABLE IF NOT EXISTS usage (
 CREATE TABLE IF NOT EXISTS widgets (
   id TEXT PRIMARY KEY,
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  template TEXT NOT NULL CHECK (template IN ('smile', 'room_staging', 'kitchen_remodel', 'landscaping')),
+  template TEXT NOT NULL CHECK (template IN ('smile', 'hair', 'kitchen_remodel', 'landscaping')),
   client_name TEXT NOT NULL,
   brand_color TEXT DEFAULT '#F59E0B',
   logo_url TEXT,
   cta_text TEXT DEFAULT 'See Your Transformation',
+  enabled_options TEXT[] DEFAULT NULL, -- NULL means all options enabled
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { UsageCard } from '@/components/dashboard/usage-card';
+import { UsageChart } from '@/components/dashboard/usage-chart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -107,6 +108,9 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Usage Chart */}
+      <UsageChart />
 
       {/* Recent Widgets */}
       <Card className="bg-card border-border">

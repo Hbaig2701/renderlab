@@ -79,6 +79,37 @@ export default function LoginPage() {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? 'Signing in...' : 'Sign In'}
           </Button>
+
+          {/* DEV ONLY - Remove before production */}
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full border-dashed border-yellow-500 text-yellow-500 hover:bg-yellow-500/10"
+            onClick={async () => {
+              setLoading(true);
+              const { error } = await supabase.auth.signInWithPassword({
+                email: 'test@renderlab.dev',
+                password: 'testpass123',
+              });
+              if (error) {
+                // Create test account if it doesn't exist
+                await supabase.auth.signUp({
+                  email: 'test@renderlab.dev',
+                  password: 'testpass123',
+                });
+                await supabase.auth.signInWithPassword({
+                  email: 'test@renderlab.dev',
+                  password: 'testpass123',
+                });
+              }
+              router.push('/dashboard');
+              router.refresh();
+            }}
+            disabled={loading}
+          >
+            [DEV] Quick Login
+          </Button>
+
           <p className="text-sm text-muted-foreground text-center">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="text-primary hover:underline">

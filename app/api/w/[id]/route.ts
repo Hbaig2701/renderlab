@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
+import { TEMPLATE_OPTIONS } from '@/types';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -13,7 +14,7 @@ export async function GET(request: Request, { params }: RouteParams) {
   // Fetch widget configuration
   const { data: widget, error } = await supabase
     .from('widgets')
-    .select('id, template, client_name, brand_color, logo_url, cta_text, status, user_id')
+    .select('id, template, client_name, brand_color, logo_url, cta_text, enabled_options, status, user_id')
     .eq('id', id)
     .single();
 
@@ -45,6 +46,13 @@ export async function GET(request: Request, { params }: RouteParams) {
     );
   }
 
+  // Get available options for this template
+  const templateOptions = TEMPLATE_OPTIONS[widget.template as keyof typeof TEMPLATE_OPTIONS] || [];
+
+  // Filter to only enabled options (null means all enabled)
+  const enabledOptionKeys = widget.enabled_options || templateOptions.map(o => o.key);
+  const availableOptions = templateOptions.filter(o => enabledOptionKeys.includes(o.key));
+
   // Return widget config (without sensitive data)
   return NextResponse.json({
     id: widget.id,
@@ -53,5 +61,6 @@ export async function GET(request: Request, { params }: RouteParams) {
     brand_color: widget.brand_color,
     logo_url: widget.logo_url,
     cta_text: widget.cta_text,
+    options: availableOptions,
   });
 }
