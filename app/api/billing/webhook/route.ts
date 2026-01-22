@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { stripe, getTierFromPriceId } from '@/lib/stripe/client';
+import { stripe, getTierFromPriceId, isStripeConfigured } from '@/lib/stripe/client';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import { TIER_LIMITS } from '@/types';
@@ -12,6 +12,14 @@ const supabase = createClient(
 );
 
 export async function POST(request: Request) {
+  // Check if Stripe is configured
+  if (!isStripeConfigured || !stripe) {
+    return NextResponse.json(
+      { error: 'Billing is not configured yet' },
+      { status: 503 }
+    );
+  }
+
   const body = await request.text();
   const headersList = await headers();
   const signature = headersList.get('stripe-signature');
@@ -85,7 +93,7 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   const subscriptionId = session.subscription as string;
 
   // Get subscription details from Stripe
-  const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId);
+  const stripeSubscription = await stripe!.subscriptions.retrieve(subscriptionId);
 
   // In newer Stripe API, period dates are on subscription items
   const firstItem = stripeSubscription.items.data[0];

@@ -1,9 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe/client';
+import { stripe, isStripeConfigured } from '@/lib/stripe/client';
 
 export async function POST() {
   try {
+    // Check if Stripe is configured
+    if (!isStripeConfigured || !stripe) {
+      return NextResponse.json(
+        { error: 'Billing is not configured yet' },
+        { status: 503 }
+      );
+    }
+
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
