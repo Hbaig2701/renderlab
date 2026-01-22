@@ -5,10 +5,6 @@ export function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Debug logging - remove after fixing
-  console.log('[Supabase] URL configured:', !!supabaseUrl, supabaseUrl?.substring(0, 30));
-  console.log('[Supabase] Key configured:', !!supabaseAnonKey);
-
   if (!supabaseUrl || !supabaseAnonKey) {
     // Return a mock client that throws helpful errors when used
     // This prevents build-time crashes while giving clear errors at runtime

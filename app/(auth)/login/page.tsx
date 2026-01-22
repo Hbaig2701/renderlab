@@ -48,14 +48,14 @@ export default function LoginPage() {
 
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: 'test@renderlab.dev',
+        email: 'testuser@gmail.com',
         password: 'testpass123',
       });
 
       if (signInError) {
         // Create test account if it doesn't exist
         const { error: signUpError } = await supabase.auth.signUp({
-          email: 'test@renderlab.dev',
+          email: 'testuser@gmail.com',
           password: 'testpass123',
         });
 
@@ -67,7 +67,7 @@ export default function LoginPage() {
 
         // Try signing in again after signup
         const { error: retryError } = await supabase.auth.signInWithPassword({
-          email: 'test@renderlab.dev',
+          email: 'testuser@gmail.com',
           password: 'testpass123',
         });
 
