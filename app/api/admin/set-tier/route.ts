@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 import { TIER_LIMITS, type SubscriptionTier } from '@/types';
 
@@ -13,8 +13,8 @@ export async function GET(request: Request) {
     }, { status: 400 });
   }
 
+  // Use regular client to get current user
   const supabase = await createClient();
-
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
@@ -22,8 +22,11 @@ export async function GET(request: Request) {
 
   const limits = TIER_LIMITS[tier];
 
+  // Use admin client to bypass RLS
+  const adminClient = createAdminClient();
+
   // Update subscription
-  const { error: subError } = await supabase
+  const { error: subError } = await adminClient
     .from('subscriptions')
     .upsert({
       user_id: user.id,
@@ -37,7 +40,7 @@ export async function GET(request: Request) {
 
   // Update usage limits
   const today = new Date().toISOString().split('T')[0];
-  const { error: usageError } = await supabase
+  const { error: usageError } = await adminClient
     .from('usage')
     .upsert({
       user_id: user.id,
