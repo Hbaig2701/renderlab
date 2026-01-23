@@ -24,7 +24,17 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
   const [brandColor, setBrandColor] = useState(widget?.brand_color || '#F59E0B');
   const [ctaText, setCtaText] = useState(widget?.cta_text || 'See Your Transformation');
   const [enabledOptions, setEnabledOptions] = useState<string[]>([]);
+  // Sales tool settings
+  const [salesToolEnabled, setSalesToolEnabled] = useState(widget?.sales_tool_enabled || false);
+  const [businessPhone, setBusinessPhone] = useState(widget?.business_phone || '');
+  const [businessEmail, setBusinessEmail] = useState(widget?.business_email || '');
+  const [businessWebsite, setBusinessWebsite] = useState(widget?.business_website || '');
+  const [businessTagline, setBusinessTagline] = useState(widget?.business_tagline || '');
   const router = useRouter();
+
+  const clientDomain = typeof window !== 'undefined'
+    ? window.location.origin
+    : process.env.NEXT_PUBLIC_CLIENT_DOMAIN || 'renderlab.com';
 
   const isEditing = !!widget;
   const isHairTemplate = template === 'hair';
@@ -73,6 +83,11 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
       cta_text: ctaText,
       enabled_options: optionsToStore,
       user_id: userId,
+      sales_tool_enabled: salesToolEnabled,
+      business_phone: businessPhone || null,
+      business_email: businessEmail || null,
+      business_website: businessWebsite || null,
+      business_tagline: businessTagline || null,
     };
 
     // Create client inside handler to avoid build-time execution
@@ -283,6 +298,127 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
               className="bg-background"
             />
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Sales Enablement Tool */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Sales Enablement Tool</CardTitle>
+            <span className="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-500 font-medium">
+              PRO FEATURE
+            </span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Use this widget as an in-person sales tool during consultations
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-background border border-border">
+            <div>
+              <p className="font-medium">Enable sales tool for this widget</p>
+              <p className="text-sm text-muted-foreground">
+                Get a direct URL to use during in-person consultations
+              </p>
+            </div>
+            <Switch
+              checked={salesToolEnabled}
+              onCheckedChange={setSalesToolEnabled}
+            />
+          </div>
+
+          {salesToolEnabled && isEditing && (
+            <>
+              <div className="space-y-2">
+                <Label>Sales Tool URL</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={`${clientDomain}/s/${widget?.id}`}
+                    readOnly
+                    className="bg-background font-mono text-sm"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${clientDomain}/s/${widget?.id}`);
+                      toast.success('URL copied to clipboard');
+                    }}
+                  >
+                    Copy
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Bookmark this URL or add it to your home screen for quick access
+                </p>
+              </div>
+
+              <div className="border-t border-border pt-4 mt-4">
+                <p className="text-sm font-medium mb-3">
+                  Business Contact Info{' '}
+                  <span className="font-normal text-muted-foreground">
+                    (shown in emails &amp; preview pages)
+                  </span>
+                </p>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="businessPhone">Phone</Label>
+                    <Input
+                      id="businessPhone"
+                      type="tel"
+                      placeholder="(555) 123-4567"
+                      value={businessPhone}
+                      onChange={(e) => setBusinessPhone(e.target.value)}
+                      className="bg-background"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="businessEmail">Email</Label>
+                    <Input
+                      id="businessEmail"
+                      type="email"
+                      placeholder="info@yourbusiness.com"
+                      value={businessEmail}
+                      onChange={(e) => setBusinessEmail(e.target.value)}
+                      className="bg-background"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="businessWebsite">Website</Label>
+                    <Input
+                      id="businessWebsite"
+                      type="url"
+                      placeholder="https://yourbusiness.com"
+                      value={businessWebsite}
+                      onChange={(e) => setBusinessWebsite(e.target.value)}
+                      className="bg-background"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="businessTagline">Tagline (optional)</Label>
+                    <Input
+                      id="businessTagline"
+                      placeholder="Your business tagline"
+                      value={businessTagline}
+                      onChange={(e) => setBusinessTagline(e.target.value)}
+                      className="bg-background"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {salesToolEnabled && !isEditing && (
+            <p className="text-sm text-muted-foreground bg-background p-3 rounded-lg border border-border">
+              Save this widget first to get your sales tool URL and configure contact details.
+            </p>
+          )}
         </CardContent>
       </Card>
 

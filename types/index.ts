@@ -59,6 +59,30 @@ export interface Widget {
   status: WidgetStatus;
   created_at: string;
   updated_at: string;
+  // Sales enablement fields
+  sales_tool_enabled: boolean;
+  business_phone: string | null;
+  business_email: string | null;
+  business_website: string | null;
+  business_tagline: string | null;
+}
+
+export interface Consultation {
+  id: string;
+  widget_id: string;
+  user_id: string;
+  client_name: string | null;
+  client_email: string | null;
+  original_image_url: string;
+  transformed_image_url: string | null;
+  style_key: string | null;
+  style_label: string | null;
+  quote_amount: number | null;
+  preview_id: string | null;
+  preview_views: number;
+  personal_message: string | null;
+  created_at: string;
+  sent_at: string | null;
 }
 
 export interface WidgetUsage {
