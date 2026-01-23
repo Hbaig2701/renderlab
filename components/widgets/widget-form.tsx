@@ -340,7 +340,7 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
                     type="button"
                     variant="outline"
                     onClick={() => {
-                      navigator.clipboard.writeText(`${clientDomain}/s/${widget?.id}`);
+                      navigator.clipboard.writeText(`${appUrl}/s/${widget?.id}`);
                       toast.success('URL copied to clipboard');
                     }}
                   >
