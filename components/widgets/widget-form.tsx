@@ -32,9 +32,7 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
   const [businessTagline, setBusinessTagline] = useState(widget?.business_tagline || '');
   const router = useRouter();
 
-  const clientDomain = typeof window !== 'undefined'
-    ? window.location.origin
-    : process.env.NEXT_PUBLIC_CLIENT_DOMAIN || 'renderlab.com';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://renderlab-tau.vercel.app';
 
   const isEditing = !!widget;
   const isHairTemplate = template === 'hair';
@@ -334,7 +332,7 @@ export function WidgetForm({ widget, userId }: WidgetFormProps) {
                 <Label>Sales Tool URL</Label>
                 <div className="flex gap-2">
                   <Input
-                    value={`${clientDomain}/s/${widget?.id}`}
+                    value={`${appUrl}/s/${widget?.id}`}
                     readOnly
                     className="bg-background font-mono text-sm"
                   />
