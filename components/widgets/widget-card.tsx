@@ -14,9 +14,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreVertical, Copy, ExternalLink, BarChart3, Edit, Trash2 } from 'lucide-react';
+import { MoreVertical, ExternalLink, BarChart3, Trash2, Code, Link2, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { WIDGET_TEMPLATES, type Widget } from '@/types';
+import { EmbedCodeModal } from './embed-code-modal';
 
 interface WidgetCardProps {
   widget: Widget;
@@ -25,9 +26,10 @@ interface WidgetCardProps {
 export function WidgetCard({ widget }: WidgetCardProps) {
   const [status, setStatus] = useState(widget.status);
   const [loading, setLoading] = useState(false);
+  const [embedModalOpen, setEmbedModalOpen] = useState(false);
   const router = useRouter();
   const template = WIDGET_TEMPLATES[widget.template];
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://renderlab-tau.vercel.app';
 
   const toggleStatus = async () => {
     setLoading(true);
@@ -47,17 +49,6 @@ export function WidgetCard({ widget }: WidgetCardProps) {
       toast.success(`Widget ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
     }
     setLoading(false);
-  };
-
-  const copyEmbedCode = () => {
-    const embedCode = `<iframe src="${appUrl}/w/${widget.id}" width="100%" height="600" frameborder="0" allow="camera"></iframe>`;
-    navigator.clipboard.writeText(embedCode);
-    toast.success('Embed code copied to clipboard');
-  };
-
-  const copyDirectLink = () => {
-    navigator.clipboard.writeText(`${appUrl}/w/${widget.id}`);
-    toast.success('Direct link copied to clipboard');
   };
 
   const deleteWidget = async () => {
@@ -97,24 +88,10 @@ export function WidgetCard({ widget }: WidgetCardProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={copyEmbedCode}>
-              <Copy className="mr-2 h-4 w-4" />
-              Copy embed code
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={copyDirectLink}>
-              <ExternalLink className="mr-2 h-4 w-4" />
-              Copy direct link
-            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={`/widgets/${widget.id}`}>
                 <BarChart3 className="mr-2 h-4 w-4" />
                 View analytics
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/widgets/${widget.id}/edit`}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit settings
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={deleteWidget} className="text-destructive">
@@ -131,8 +108,9 @@ export function WidgetCard({ widget }: WidgetCardProps) {
           </code>
         </div>
       </CardContent>
-      <CardFooter className="flex items-center justify-between border-t border-border pt-3">
-        <div className="flex items-center gap-2">
+      <CardFooter className="flex flex-col gap-3 border-t border-border pt-3">
+        {/* Status toggle */}
+        <div className="flex items-center gap-2 w-full">
           <Switch
             checked={status === 'active'}
             onCheckedChange={toggleStatus}
@@ -145,13 +123,55 @@ export function WidgetCard({ widget }: WidgetCardProps) {
             {status}
           </Badge>
         </div>
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/w/${widget.id}`} target="_blank">
-            Preview
-            <ExternalLink className="ml-2 h-3 w-3" />
-          </Link>
-        </Button>
+
+        {/* Action buttons */}
+        <div className="flex items-center gap-2 w-full">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={() => setEmbedModalOpen(true)}
+          >
+            <Code className="mr-1.5 h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Embed</span>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            asChild
+          >
+            <a
+              href={`${appUrl}/s/${widget.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Link2 className="mr-1.5 h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Sales Tool</span>
+              <ExternalLink className="ml-1 h-3 w-3" />
+            </a>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            asChild
+          >
+            <Link href={`/widgets/${widget.id}/edit`}>
+              <Settings className="mr-1.5 h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Settings</span>
+            </Link>
+          </Button>
+        </div>
       </CardFooter>
+
+      {/* Embed Code Modal */}
+      <EmbedCodeModal
+        open={embedModalOpen}
+        onOpenChange={setEmbedModalOpen}
+        widgetId={widget.id}
+        appUrl={appUrl}
+      />
     </Card>
   );
 }
