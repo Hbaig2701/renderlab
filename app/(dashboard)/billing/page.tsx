@@ -26,9 +26,9 @@ const TIER_FEATURES: Record<SubscriptionTier, {
     price: 49,
     features: [
       '200 enhancement transforms/mo',
-      '50 widget transforms/mo',
-      '3 active widgets',
-      'All widget templates',
+      '50 consultations/mo',
+      '3 active visualizers',
+      'All visualizer templates',
       'Basic analytics',
       '"Powered by RenderLab" badge',
     ],
@@ -38,9 +38,9 @@ const TIER_FEATURES: Record<SubscriptionTier, {
     price: 99,
     features: [
       '500 enhancement transforms/mo',
-      '200 widget transforms/mo',
-      '10 active widgets',
-      'All widget templates',
+      '200 consultations/mo',
+      '10 active visualizers',
+      'All visualizer templates',
       'Full analytics',
       'White label option',
       'Remove branding',
@@ -51,9 +51,9 @@ const TIER_FEATURES: Record<SubscriptionTier, {
     price: 199,
     features: [
       '1,500 enhancement transforms/mo',
-      '750 widget transforms/mo',
-      'Unlimited active widgets',
-      'All widget templates',
+      '750 consultations/mo',
+      'Unlimited active visualizers',
+      'All visualizer templates',
       'Full analytics + export',
       'White label',
       'No branding',
@@ -230,18 +230,18 @@ function BillingPageContent() {
               </p>
             </div>
             <div className="p-4 rounded-lg bg-secondary/50">
-              <p className="text-sm text-muted-foreground">Widget Transforms</p>
+              <p className="text-sm text-muted-foreground">Consultations</p>
               <p className="text-2xl font-bold">
-                {TIER_LIMITS[currentTier].widget_transform_limit}
+                {TIER_LIMITS[currentTier].consultation_limit}
                 <span className="text-sm font-normal text-muted-foreground">/mo</span>
               </p>
             </div>
             <div className="p-4 rounded-lg bg-secondary/50">
-              <p className="text-sm text-muted-foreground">Active Widgets</p>
+              <p className="text-sm text-muted-foreground">Active Visualizers</p>
               <p className="text-2xl font-bold">
-                {TIER_LIMITS[currentTier].active_widgets === Infinity
+                {TIER_LIMITS[currentTier].active_visualizers === Infinity
                   ? 'Unlimited'
-                  : TIER_LIMITS[currentTier].active_widgets}
+                  : TIER_LIMITS[currentTier].active_visualizers}
               </p>
             </div>
           </div>
@@ -250,7 +250,7 @@ function BillingPageContent() {
             <div>
               <p className="text-sm font-medium">Soft Caps</p>
               <p className="text-sm text-muted-foreground">
-                Widgets never break! If you exceed your limits, you&apos;ll be charged{' '}
+                Visualizers never break! If you exceed your limits, you&apos;ll be charged{' '}
                 ${TIER_LIMITS[currentTier].overage_rate} per additional transform.
               </p>
             </div>

@@ -1,7 +1,7 @@
 export type SubscriptionTier = 'starter' | 'pro' | 'agency';
 export type SubscriptionStatus = 'active' | 'canceled' | 'past_due' | 'trialing';
-export type WidgetTemplate = 'smile' | 'hair' | 'kitchen_remodel' | 'landscaping';
-export type WidgetStatus = 'active' | 'inactive';
+export type VisualizerTemplate = 'smile' | 'hair' | 'kitchen_remodel' | 'landscaping';
+export type VisualizerStatus = 'active' | 'inactive';
 
 // Transformation option types per template
 export type SmileOption = 'whitening' | 'straightening' | 'veneers' | 'full_makeover';
@@ -40,23 +40,23 @@ export interface Usage {
   period_start: string;
   period_end: string;
   enhancement_count: number;
-  widget_transform_count: number;
+  consultation_count: number;
   enhancement_limit: number;
-  widget_transform_limit: number;
+  consultation_limit: number;
   created_at: string;
   updated_at: string;
 }
 
-export interface Widget {
+export interface Visualizer {
   id: string;
   user_id: string;
-  template: WidgetTemplate;
+  template: VisualizerTemplate;
   client_name: string;
   brand_color: string;
   logo_url: string | null;
   cta_text: string;
   enabled_options: string[] | null; // null means all options enabled
-  status: WidgetStatus;
+  status: VisualizerStatus;
   created_at: string;
   updated_at: string;
   // Sales enablement fields
@@ -69,7 +69,7 @@ export interface Widget {
 
 export interface Consultation {
   id: string;
-  widget_id: string;
+  visualizer_id: string;
   user_id: string;
   client_name: string | null;
   client_email: string | null;
@@ -85,12 +85,11 @@ export interface Consultation {
   sent_at: string | null;
 }
 
-export interface WidgetUsage {
+export interface ConsultationUsage {
   id: string;
-  widget_id: string;
+  visualizer_id: string;
   user_id: string;
   transformed_at: string;
-  date: string;
 }
 
 export interface EnhancementUsage {
@@ -98,59 +97,71 @@ export interface EnhancementUsage {
   user_id: string;
   enhancement_type: string;
   transformed_at: string;
-  date: string;
+}
+
+export interface DemoUsage {
+  id: string;
+  user_id: string;
+  period_start: string;
+  credits_used: number;
+  created_at: string;
+  updated_at: string;
 }
 
 // Tier limits configuration
 export const TIER_LIMITS: Record<SubscriptionTier, {
   enhancement_limit: number;
-  widget_transform_limit: number;
-  active_widgets: number;
+  consultation_limit: number;
+  active_visualizers: number;
   overage_rate: number;
+  demo_credits: number;
 }> = {
   starter: {
     enhancement_limit: 200,
-    widget_transform_limit: 50,
-    active_widgets: 3,
+    consultation_limit: 50,
+    active_visualizers: 3,
     overage_rate: 0.25,
+    demo_credits: 5,
   },
   pro: {
     enhancement_limit: 500,
-    widget_transform_limit: 200,
-    active_widgets: 10,
+    consultation_limit: 200,
+    active_visualizers: 10,
     overage_rate: 0.25,
+    demo_credits: 10,
   },
   agency: {
     enhancement_limit: 1500,
-    widget_transform_limit: 750,
-    active_widgets: Infinity,
+    consultation_limit: 750,
+    active_visualizers: Infinity,
     overage_rate: 0.20,
+    demo_credits: 20,
   },
 };
 
-// Widget template display names and descriptions
-export const WIDGET_TEMPLATES: Record<WidgetTemplate, {
+// Visualizer template display names and descriptions
+export const VISUALIZER_TEMPLATES: Record<VisualizerTemplate, {
   name: string;
   description: string;
   icon: string;
 }> = {
   smile: {
-    name: 'Smile Transformation',
+    name: 'Smile Visualizer',
     description: 'Show dental makeover results with whitening and alignment',
     icon: '😁',
   },
   hair: {
-    name: 'Hair Transformation',
+    name: 'Style Visualizer',
     description: 'Visualize color, cut, and texture changes for hair salons',
     icon: '💇‍♀️',
   },
   kitchen_remodel: {
-    name: 'Kitchen/Bathroom Remodel',
+    name: 'Remodel Visualizer',
     description: 'Visualize modern kitchen and bathroom renovations',
     icon: '🍳',
   },
   landscaping: {
-    name: 'Landscaping',
+    name: 'Landscape Visualizer',
     description: 'Show yard transformations with professional landscaping',
     icon: '🌳',
   },
@@ -180,7 +191,7 @@ export const HAIR_CATEGORIES: Record<string, {
 };
 
 // Transformation options per template
-export const TEMPLATE_OPTIONS: Record<WidgetTemplate, {
+export const TEMPLATE_OPTIONS: Record<VisualizerTemplate, {
   key: string;
   label: string;
   description: string;
@@ -222,3 +233,13 @@ export const TEMPLATE_OPTIONS: Record<WidgetTemplate, {
     { key: 'outdoor_living', label: 'Outdoor Living', description: 'Entertainment-ready' },
   ],
 };
+
+// Backwards compatibility aliases (deprecated - will be removed in future version)
+/** @deprecated Use VisualizerTemplate instead */
+export type WidgetTemplate = VisualizerTemplate;
+/** @deprecated Use VisualizerStatus instead */
+export type WidgetStatus = VisualizerStatus;
+/** @deprecated Use Visualizer instead */
+export type Widget = Visualizer;
+/** @deprecated Use VISUALIZER_TEMPLATES instead */
+export const WIDGET_TEMPLATES = VISUALIZER_TEMPLATES;

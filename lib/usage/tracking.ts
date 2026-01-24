@@ -17,7 +17,7 @@ interface UsageCheckResult {
 export async function checkUsage(
   supabase: SupabaseClient,
   userId: string,
-  type: 'enhancement' | 'widget'
+  type: 'enhancement' | 'consultation'
 ): Promise<UsageCheckResult> {
   // Get subscription tier
   const { data: subscription } = await supabase
@@ -37,18 +37,18 @@ export async function checkUsage(
 
   const { data: usage } = await supabase
     .from('usage')
-    .select('enhancement_count, widget_transform_count')
+    .select('enhancement_count, consultation_count')
     .eq('user_id', userId)
     .eq('period_start', periodStart)
     .single();
 
   const currentCount = type === 'enhancement'
     ? (usage?.enhancement_count || 0)
-    : (usage?.widget_transform_count || 0);
+    : (usage?.consultation_count || 0);
 
   const limit = type === 'enhancement'
     ? limits.enhancement_limit
-    : limits.widget_transform_limit;
+    : limits.consultation_limit;
 
   const isOverage = currentCount >= limit;
 
@@ -67,7 +67,7 @@ export async function checkUsage(
 export async function logOverage(
   supabase: SupabaseClient,
   userId: string,
-  type: 'enhancement' | 'widget',
+  type: 'enhancement' | 'consultation',
   rate: number
 ): Promise<void> {
   await supabase.from('overages').insert({
@@ -83,7 +83,7 @@ export async function logOverage(
 export async function checkUsageAlert(
   supabase: SupabaseClient,
   userId: string,
-  type: 'enhancement' | 'widget',
+  type: 'enhancement' | 'consultation',
   currentCount: number,
   limit: number
 ): Promise<'80' | '100' | null> {
@@ -119,7 +119,7 @@ export async function checkUsageAlert(
 export async function recordUsageAlert(
   supabase: SupabaseClient,
   userId: string,
-  type: 'enhancement' | 'widget',
+  type: 'enhancement' | 'consultation',
   threshold: number
 ): Promise<void> {
   const today = new Date();
@@ -142,7 +142,7 @@ export async function checkAndSendUsageAlert(
   supabase: SupabaseClient,
   userId: string,
   userEmail: string,
-  type: 'enhancement' | 'widget',
+  type: 'enhancement' | 'consultation',
   currentCount: number,
   limit: number,
   overageRate: number
@@ -155,7 +155,7 @@ export async function checkAndSendUsageAlert(
 
   try {
     // Send the appropriate email
-    const typeLabel = type === 'enhancement' ? 'Enhancement' : 'Widget';
+    const typeLabel = type === 'enhancement' ? 'Enhancement' : 'Consultation';
     let emailSent = false;
 
     if (alertThreshold === '80') {

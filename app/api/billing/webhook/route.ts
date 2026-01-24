@@ -137,9 +137,9 @@ async function handleCheckoutComplete(supabase: SupabaseClient<any, any, any>, s
     period_start: periodStart.toISOString().split('T')[0],
     period_end: periodEnd.toISOString().split('T')[0],
     enhancement_count: 0,
-    widget_transform_count: 0,
+    consultation_count: 0,
     enhancement_limit: limits.enhancement_limit,
-    widget_transform_limit: limits.widget_transform_limit,
+    consultation_limit: limits.consultation_limit,
   }, {
     onConflict: 'user_id,period_start',
   });
@@ -191,7 +191,7 @@ async function handleSubscriptionUpdate(supabase: SupabaseClient<any, any, any>,
 
   await supabase.from('usage').update({
     enhancement_limit: limits.enhancement_limit,
-    widget_transform_limit: limits.widget_transform_limit,
+    consultation_limit: limits.consultation_limit,
   }).eq('user_id', sub.user_id).eq('period_start', periodStart.toISOString().split('T')[0]);
 
   console.log(`[Webhook] Subscription updated for user ${sub.user_id}, tier: ${tier}, status: ${status}`);

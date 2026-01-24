@@ -7,15 +7,15 @@ import { Loader2 } from 'lucide-react';
 interface DailyData {
   date: string;
   enhancements: number;
-  widgets: number;
+  consultations: number;
 }
 
 interface UsageData {
   current: {
     enhancement_count: number;
-    widget_transform_count: number;
+    consultation_count: number;
     enhancement_limit: number;
-    widget_transform_limit: number;
+    consultation_limit: number;
   };
   daily: DailyData[];
 }
@@ -23,7 +23,7 @@ interface UsageData {
 export function UsageChart() {
   const [data, setData] = useState<UsageData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeType, setActiveType] = useState<'enhancements' | 'widgets'>('enhancements');
+  const [activeType, setActiveType] = useState<'enhancements' | 'consultations'>('enhancements');
 
   useEffect(() => {
     fetchUsage();
@@ -58,7 +58,7 @@ export function UsageChart() {
 
   const chartData = data.daily;
   const maxValue = Math.max(
-    ...chartData.map((d) => (activeType === 'enhancements' ? d.enhancements : d.widgets)),
+    ...chartData.map((d) => (activeType === 'enhancements' ? d.enhancements : d.consultations)),
     1
   );
 
@@ -79,14 +79,14 @@ export function UsageChart() {
               Enhancements
             </button>
             <button
-              onClick={() => setActiveType('widgets')}
+              onClick={() => setActiveType('consultations')}
               className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                activeType === 'widgets'
+                activeType === 'consultations'
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
               }`}
             >
-              Widgets
+              Consultations
             </button>
           </div>
         </div>
@@ -94,7 +94,7 @@ export function UsageChart() {
       <CardContent>
         <div className="h-48 flex items-end gap-1">
           {chartData.map((day, i) => {
-            const value = activeType === 'enhancements' ? day.enhancements : day.widgets;
+            const value = activeType === 'enhancements' ? day.enhancements : day.consultations;
             const height = maxValue > 0 ? (value / maxValue) * 100 : 0;
             const date = new Date(day.date);
             const isToday = i === chartData.length - 1;
@@ -132,7 +132,7 @@ export function UsageChart() {
             <p className="text-xl font-semibold">
               {activeType === 'enhancements'
                 ? data.current.enhancement_count
-                : data.current.widget_transform_count}
+                : data.current.consultation_count}
             </p>
           </div>
           <div>
@@ -140,7 +140,7 @@ export function UsageChart() {
             <p className="text-xl font-semibold">
               {activeType === 'enhancements'
                 ? data.current.enhancement_limit
-                : data.current.widget_transform_limit}
+                : data.current.consultation_limit}
             </p>
           </div>
         </div>

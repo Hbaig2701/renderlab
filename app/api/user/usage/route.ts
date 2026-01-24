@@ -29,25 +29,25 @@ export async function GET() {
       .eq('user_id', user.id)
       .gte('transformed_at', thirtyDaysAgo.toISOString());
 
-    // Get daily widget usage for the last 30 days
-    const { data: widgetDaily } = await supabase
-      .from('widget_usage')
+    // Get daily consultation usage for the last 30 days
+    const { data: consultationDaily } = await supabase
+      .from('consultation_usage')
       .select('transformed_at')
       .eq('user_id', user.id)
       .gte('transformed_at', thirtyDaysAgo.toISOString());
 
     // Aggregate by date
     const enhancementByDate: Record<string, number> = {};
-    const widgetByDate: Record<string, number> = {};
+    const consultationByDate: Record<string, number> = {};
 
     enhancementDaily?.forEach((row: { transformed_at: string }) => {
       const dateStr = row.transformed_at.split('T')[0];
       enhancementByDate[dateStr] = (enhancementByDate[dateStr] || 0) + 1;
     });
 
-    widgetDaily?.forEach((row: { transformed_at: string }) => {
+    consultationDaily?.forEach((row: { transformed_at: string }) => {
       const dateStr = row.transformed_at.split('T')[0];
-      widgetByDate[dateStr] = (widgetByDate[dateStr] || 0) + 1;
+      consultationByDate[dateStr] = (consultationByDate[dateStr] || 0) + 1;
     });
 
     // Generate last 30 days array
@@ -59,16 +59,16 @@ export async function GET() {
       dailyData.push({
         date: dateStr,
         enhancements: enhancementByDate[dateStr] || 0,
-        widgets: widgetByDate[dateStr] || 0,
+        consultations: consultationByDate[dateStr] || 0,
       });
     }
 
     return NextResponse.json({
       current: usage || {
         enhancement_count: 0,
-        widget_transform_count: 0,
+        consultation_count: 0,
         enhancement_limit: 200,
-        widget_transform_limit: 50,
+        consultation_limit: 50,
       },
       daily: dailyData,
     });

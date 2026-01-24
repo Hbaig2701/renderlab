@@ -1,8 +1,9 @@
 export const stagingEnhancementPrompts: Record<string, string> = {
   modern: `
-Look at this room photo carefully. I need you to create a version where ONLY the furniture changes to modern style.
+CRITICAL: First identify what type of room this is (bedroom, living room, dining room, kitchen, office, bathroom, etc.). The room type MUST NOT change.
 
 You MUST preserve EXACTLY:
+- THE ROOM TYPE - if it's a dining room, it stays a dining room. If it's a bedroom, it stays a bedroom. NEVER convert one room type to another.
 - The exact room shape (including any slanted ceilings, angles)
 - The exact wall colors and textures
 - The exact window positions, sizes, and shapes
@@ -11,15 +12,20 @@ You MUST preserve EXACTLY:
 - Any artwork or frames on walls
 - The exact camera angle and lighting
 
-ONLY change the furniture style to modern. If there's a bed, make it a modern bed. If there's a sofa, make it a modern sofa. Do not add furniture that doesn't belong (no sofas in bedrooms).
+ONLY replace existing furniture with modern style furniture APPROPRIATE FOR THAT ROOM TYPE:
+- Dining room: modern dining table and chairs
+- Bedroom: modern bed and nightstands
+- Living room: modern sofa and coffee table
+- Office: modern desk and chair
 
-This is like replacing furniture in a photo - the room itself must look identical.
+NEVER add beds to dining rooms. NEVER add dining tables to bedrooms. Keep the same furniture FUNCTION, just change the STYLE to modern.
 `,
 
   luxury: `
-Look at this room photo carefully. I need you to create a version where ONLY the furniture changes to luxury style.
+CRITICAL: First identify what type of room this is (bedroom, living room, dining room, kitchen, office, bathroom, etc.). The room type MUST NOT change.
 
 You MUST preserve EXACTLY:
+- THE ROOM TYPE - if it's a dining room, it stays a dining room. If it's a bedroom, it stays a bedroom. NEVER convert one room type to another.
 - The exact room shape (including any slanted ceilings, angles)
 - The exact wall colors and textures
 - The exact window positions, sizes, and shapes
@@ -28,15 +34,20 @@ You MUST preserve EXACTLY:
 - Any artwork or frames on walls
 - The exact camera angle and lighting
 
-ONLY change the furniture style to luxury. If there's a bed, make it a luxury upholstered bed with premium bedding. If there's a sofa, make it an elegant velvet sofa. Do not add furniture that doesn't belong (no sofas in bedrooms).
+ONLY replace existing furniture with luxury style furniture APPROPRIATE FOR THAT ROOM TYPE:
+- Dining room: elegant dining table with upholstered chairs
+- Bedroom: luxury upholstered bed with premium bedding
+- Living room: elegant velvet sofa and ornate coffee table
+- Office: executive desk and leather chair
 
-This is like replacing furniture in a photo - the room itself must look identical.
+NEVER add beds to dining rooms. NEVER add dining tables to bedrooms. Keep the same furniture FUNCTION, just change the STYLE to luxury.
 `,
 
   scandinavian: `
-Look at this room photo carefully. I need you to create a version where ONLY the furniture changes to Scandinavian style.
+CRITICAL: First identify what type of room this is (bedroom, living room, dining room, kitchen, office, bathroom, etc.). The room type MUST NOT change.
 
 You MUST preserve EXACTLY:
+- THE ROOM TYPE - if it's a dining room, it stays a dining room. If it's a bedroom, it stays a bedroom. NEVER convert one room type to another.
 - The exact room shape (including any slanted ceilings, angles)
 - The exact wall colors and textures
 - The exact window positions, sizes, and shapes
@@ -45,15 +56,20 @@ You MUST preserve EXACTLY:
 - Any artwork or frames on walls
 - The exact camera angle and lighting
 
-ONLY change the furniture style to Scandinavian. If there's a bed, make it a light wood Scandinavian bed. If there's a sofa, make it a minimal Scandinavian sofa. Do not add furniture that doesn't belong (no sofas in bedrooms).
+ONLY replace existing furniture with Scandinavian style furniture APPROPRIATE FOR THAT ROOM TYPE:
+- Dining room: light wood dining table with minimal chairs
+- Bedroom: light wood bed frame with clean lines
+- Living room: minimal Scandinavian sofa in neutral tones
+- Office: simple wood desk with ergonomic chair
 
-This is like replacing furniture in a photo - the room itself must look identical.
+NEVER add beds to dining rooms. NEVER add dining tables to bedrooms. Keep the same furniture FUNCTION, just change the STYLE to Scandinavian.
 `,
 
   rustic: `
-Look at this room photo carefully. I need you to create a version where ONLY the furniture changes to rustic style.
+CRITICAL: First identify what type of room this is (bedroom, living room, dining room, kitchen, office, bathroom, etc.). The room type MUST NOT change.
 
 You MUST preserve EXACTLY:
+- THE ROOM TYPE - if it's a dining room, it stays a dining room. If it's a bedroom, it stays a bedroom. NEVER convert one room type to another.
 - The exact room shape (including any slanted ceilings, angles)
 - The exact wall colors and textures
 - The exact window positions, sizes, and shapes
@@ -62,8 +78,12 @@ You MUST preserve EXACTLY:
 - Any artwork or frames on walls
 - The exact camera angle and lighting
 
-ONLY change the furniture style to rustic. If there's a bed, make it a solid wood rustic bed. If there's a sofa, make it a leather rustic sofa. Do not add furniture that doesn't belong (no sofas in bedrooms).
+ONLY replace existing furniture with rustic style furniture APPROPRIATE FOR THAT ROOM TYPE:
+- Dining room: farmhouse dining table with wooden chairs
+- Bedroom: solid wood bed frame with rustic bedding
+- Living room: leather sofa with reclaimed wood coffee table
+- Office: rustic wood desk with vintage chair
 
-This is like replacing furniture in a photo - the room itself must look identical.
+NEVER add beds to dining rooms. NEVER add dining tables to bedrooms. Keep the same furniture FUNCTION, just change the STYLE to rustic.
 `
 };

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Layers, Plus, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { TIER_LIMITS, type SubscriptionTier, type Widget } from '@/types';
+import { TIER_LIMITS, type SubscriptionTier, type Visualizer } from '@/types';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -33,16 +33,16 @@ export default async function DashboardPage() {
     .limit(1)
     .single();
 
-  // Fetch widgets count
-  const { count: widgetCount } = await supabase
-    .from('widgets')
+  // Fetch visualizers count
+  const { count: visualizerCount } = await supabase
+    .from('visualizers')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', user.id)
     .eq('status', 'active');
 
-  // Fetch recent widgets
-  const { data: recentWidgets } = await supabase
-    .from('widgets')
+  // Fetch recent visualizers
+  const { data: recentVisualizers } = await supabase
+    .from('visualizers')
     .select('*')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
@@ -66,9 +66,9 @@ export default async function DashboardPage() {
             {tier.charAt(0).toUpperCase() + tier.slice(1)} Plan
           </Badge>
           <Button asChild>
-            <Link href="/widgets/new">
+            <Link href="/visualizers/new">
               <Plus className="mr-2 h-4 w-4" />
-              New Widget
+              New Visualizer
             </Link>
           </Button>
         </div>
@@ -83,27 +83,27 @@ export default async function DashboardPage() {
           icon={<Sparkles className="h-4 w-4 text-muted-foreground" />}
         />
         <UsageCard
-          title="Widget Transforms"
-          used={usage?.widget_transform_count || 0}
-          limit={limits.widget_transform_limit}
+          title="Consultations"
+          used={usage?.consultation_count || 0}
+          limit={limits.consultation_limit}
           icon={<Layers className="h-4 w-4 text-muted-foreground" />}
         />
         <Card className="bg-card border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Active Widgets
+              Active Visualizers
             </CardTitle>
             <Layers className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {widgetCount || 0}{' '}
+              {visualizerCount || 0}{' '}
               <span className="text-sm font-normal text-muted-foreground">
-                / {limits.active_widgets === Infinity ? '∞' : limits.active_widgets}
+                / {limits.active_visualizers === Infinity ? '∞' : limits.active_visualizers}
               </span>
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
-              Widgets deployed to clients
+              Visualizers deployed to clients
             </p>
           </CardContent>
         </Card>
@@ -112,43 +112,43 @@ export default async function DashboardPage() {
       {/* Usage Chart */}
       <UsageChart />
 
-      {/* Recent Widgets */}
+      {/* Recent Visualizers */}
       <Card className="bg-card border-border">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Recent Widgets</CardTitle>
+          <CardTitle>Recent Visualizers</CardTitle>
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/widgets">
+            <Link href="/visualizers">
               View all
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </CardHeader>
         <CardContent>
-          {recentWidgets && recentWidgets.length > 0 ? (
+          {recentVisualizers && recentVisualizers.length > 0 ? (
             <div className="space-y-3">
-              {recentWidgets.map((widget: Widget) => (
+              {recentVisualizers.map((visualizer: Visualizer) => (
                 <Link
-                  key={widget.id}
-                  href={`/widgets/${widget.id}`}
+                  key={visualizer.id}
+                  href={`/visualizers/${visualizer.id}`}
                   className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: widget.brand_color }}
+                      style={{ backgroundColor: visualizer.brand_color }}
                     />
                     <div>
-                      <p className="font-medium">{widget.client_name}</p>
+                      <p className="font-medium">{visualizer.client_name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {widget.template.replace('_', ' ')}
+                        {visualizer.template.replace('_', ' ')}
                       </p>
                     </div>
                   </div>
                   <Badge
-                    variant={widget.status === 'active' ? 'default' : 'secondary'}
-                    className={widget.status === 'active' ? 'bg-success' : ''}
+                    variant={visualizer.status === 'active' ? 'default' : 'secondary'}
+                    className={visualizer.status === 'active' ? 'bg-success' : ''}
                   >
-                    {widget.status}
+                    {visualizer.status}
                   </Badge>
                 </Link>
               ))}
@@ -156,9 +156,9 @@ export default async function DashboardPage() {
           ) : (
             <div className="text-center py-8">
               <Layers className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No widgets yet</p>
+              <p className="text-muted-foreground">No visualizers yet</p>
               <Button asChild className="mt-4">
-                <Link href="/widgets/new">Create your first widget</Link>
+                <Link href="/visualizers/new">Create your first visualizer</Link>
               </Button>
             </div>
           )}

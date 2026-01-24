@@ -17,7 +17,7 @@ import {
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Widgets', href: '/widgets', icon: Layers },
+  { name: 'Visualizers', href: '/visualizers', icon: Layers },
   { name: 'Enhance', href: '/enhance', icon: Sparkles },
   { name: 'Calculator', href: '/calculator', icon: Calculator },
   { name: 'Billing', href: '/billing', icon: CreditCard },

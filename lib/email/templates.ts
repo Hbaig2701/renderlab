@@ -1,5 +1,5 @@
-export function usageAlert80Template(type: 'enhancement' | 'widget', used: number, limit: number): string {
-  const typeLabel = type === 'enhancement' ? 'Enhancement' : 'Widget';
+export function usageAlert80Template(type: 'enhancement' | 'consultation', used: number, limit: number): string {
+  const typeLabel = type === 'enhancement' ? 'Enhancement' : 'Consultation';
 
   return `
 <!DOCTYPE html>
@@ -42,7 +42,7 @@ export function usageAlert80Template(type: 'enhancement' | 'widget', used: numbe
         </div>
       </div>
 
-      <p>Don't worry - your widgets will continue to work even if you exceed your limit. Any additional transforms will be billed as overages at your plan's rate.</p>
+      <p>Don't worry - your visualizers will continue to work even if you exceed your limit. Any additional transforms will be billed as overages at your plan's rate.</p>
 
       <p>Consider upgrading your plan for more transforms and lower overage rates.</p>
 
@@ -54,8 +54,8 @@ export function usageAlert80Template(type: 'enhancement' | 'widget', used: numbe
 `;
 }
 
-export function usageAlert100Template(type: 'enhancement' | 'widget', used: number, limit: number, overageRate: number): string {
-  const typeLabel = type === 'enhancement' ? 'Enhancement' : 'Widget';
+export function usageAlert100Template(type: 'enhancement' | 'consultation', used: number, limit: number, overageRate: number): string {
+  const typeLabel = type === 'enhancement' ? 'Enhancement' : 'Consultation';
 
   return `
 <!DOCTYPE html>
@@ -100,7 +100,7 @@ export function usageAlert100Template(type: 'enhancement' | 'widget', used: numb
       </div>
 
       <div class="info-box">
-        <strong>Your widgets are still working!</strong>
+        <strong>Your visualizers are still working!</strong>
         <p style="margin: 10px 0 0 0;">Additional transforms will be billed at <strong>$${overageRate.toFixed(2)}</strong> per transform.</p>
       </div>
 

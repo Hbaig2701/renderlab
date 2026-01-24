@@ -46,7 +46,7 @@ export async function GET(request: Request) {
       user_id: user.id,
       period_start: today,
       enhancement_limit: limits.enhancement_limit,
-      widget_transform_limit: limits.widget_transform_limit,
+      consultation_limit: limits.consultation_limit,
     }, { onConflict: 'user_id,period_start' });
 
   if (usageError) {
@@ -58,8 +58,8 @@ export async function GET(request: Request) {
     tier,
     limits: {
       enhancements: limits.enhancement_limit,
-      active_widgets: limits.active_widgets,
-      widget_transforms: limits.widget_transform_limit,
+      active_visualizers: limits.active_visualizers,
+      consultations: limits.consultation_limit,
     }
   });
 }
