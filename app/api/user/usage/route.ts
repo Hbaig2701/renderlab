@@ -25,27 +25,29 @@ export async function GET() {
 
     const { data: enhancementDaily } = await supabase
       .from('enhancement_usage')
-      .select('date')
+      .select('transformed_at')
       .eq('user_id', user.id)
-      .gte('date', thirtyDaysAgo.toISOString().split('T')[0]);
+      .gte('transformed_at', thirtyDaysAgo.toISOString());
 
     // Get daily widget usage for the last 30 days
     const { data: widgetDaily } = await supabase
       .from('widget_usage')
-      .select('date')
+      .select('transformed_at')
       .eq('user_id', user.id)
-      .gte('date', thirtyDaysAgo.toISOString().split('T')[0]);
+      .gte('transformed_at', thirtyDaysAgo.toISOString());
 
     // Aggregate by date
     const enhancementByDate: Record<string, number> = {};
     const widgetByDate: Record<string, number> = {};
 
-    enhancementDaily?.forEach((row: { date: string }) => {
-      enhancementByDate[row.date] = (enhancementByDate[row.date] || 0) + 1;
+    enhancementDaily?.forEach((row: { transformed_at: string }) => {
+      const dateStr = row.transformed_at.split('T')[0];
+      enhancementByDate[dateStr] = (enhancementByDate[dateStr] || 0) + 1;
     });
 
-    widgetDaily?.forEach((row: { date: string }) => {
-      widgetByDate[row.date] = (widgetByDate[row.date] || 0) + 1;
+    widgetDaily?.forEach((row: { transformed_at: string }) => {
+      const dateStr = row.transformed_at.split('T')[0];
+      widgetByDate[dateStr] = (widgetByDate[dateStr] || 0) + 1;
     });
 
     // Generate last 30 days array
