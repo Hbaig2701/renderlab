@@ -1,303 +1,310 @@
-// Hair Color Prompts
-export const hairColorPrompts: Record<string, string> = {
+// Hair Prompts - Fixed for accurate image editing
+export const hairPrompts: Record<string, string> = {
+
+  // COLOR
   balayage: `
-Transform this photo to show a balayage hair color result.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair LENGTH and overall SHAPE must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Add balayage hair coloring to the person in this photo.
 
-ONLY CHANGE:
-- Apply balayage coloring technique to the hair
-- Hand-painted, sweeping highlights that are darker at roots and lighter toward ends
-- Natural, sun-kissed gradient effect
-- Highlights should be 2-3 shades lighter than base color
-- Blend should look natural and seamless, not stripy
-- Keep some depth at the roots and around the face
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual salon before/after photo.
+ONLY MODIFY THE HAIR:
+- Apply balayage technique: darker roots transitioning to lighter ends
+- Hand-painted, natural-looking highlights
+- Preserve the exact hair LENGTH and SHAPE
+- Preserve the hair TEXTURE (straight/wavy/curly)
+- Color should be 2-3 shades lighter at ends than roots
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair color changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   blonde: `
-Transform this photo to show a full blonde hair transformation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair LENGTH and overall SHAPE must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Transform the hair color to blonde for the person in this photo.
 
-ONLY CHANGE:
-- Transform hair color to a beautiful blonde shade
-- Choose a flattering blonde tone that complements their skin tone
-- Hair should have dimension and depth, not flat single-tone color
-- Subtle root shadow for natural, lived-in look
-- Hair should look healthy, shiny, and well-conditioned
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual salon before/after photo.
+ONLY MODIFY THE HAIR:
+- Change hair color to a flattering blonde shade
+- Add natural dimension and depth (not flat/single-tone)
+- Include subtle root shadow for natural look
+- Preserve the exact hair LENGTH and SHAPE
+- Preserve the hair TEXTURE (straight/wavy/curly)
+- Hair should look healthy and shiny
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair color changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   brunette: `
-Transform this photo to show a rich brunette hair transformation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair LENGTH and overall SHAPE must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Transform the hair color to rich brunette for the person in this photo.
 
-ONLY CHANGE:
-- Transform hair color to a rich, dimensional brunette shade
-- Choose a flattering brown tone (chocolate, chestnut, espresso, mocha)
-- Hair should have depth and dimension with subtle tonal variation
-- Add shine and reflection for healthy appearance
-- Color should look rich and expensive, not flat or dull
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual salon before/after photo.
+ONLY MODIFY THE HAIR:
+- Change hair color to rich, dimensional brown
+- Choose flattering tone (chocolate, chestnut, espresso, or mocha)
+- Add depth and subtle tonal variation
+- Preserve the exact hair LENGTH and SHAPE
+- Preserve the hair TEXTURE (straight/wavy/curly)
+- Hair should look rich, shiny, and healthy
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair color changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   auburn: `
-Transform this photo to show an auburn red hair transformation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair LENGTH and overall SHAPE must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Transform the hair color to auburn/red for the person in this photo.
 
-ONLY CHANGE:
-- Transform hair color to a beautiful auburn/red shade
-- Choose a flattering red tone (copper, ginger, burgundy, warm auburn)
-- Hair should have depth with subtle variation in red tones
-- Color should catch the light with warm, rich reflection
-- Should look natural and wearable, not costume-like
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual salon before/after photo.
-`
-};
+ONLY MODIFY THE HAIR:
+- Change hair color to auburn/red shade
+- Choose flattering tone (copper, ginger, burgundy, or warm auburn)
+- Add depth with subtle variation in red tones
+- Preserve the exact hair LENGTH and SHAPE
+- Preserve the hair TEXTURE (straight/wavy/curly)
+- Color should look natural and wearable
 
-// Hair Cut Prompts
-export const hairCutPrompts: Record<string, string> = {
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair color changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
+`,
+
+  // CUT
   bob: `
-Transform this photo to show a classic bob haircut.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with a classic bob haircut.
 
-ONLY CHANGE:
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+
+ONLY MODIFY:
 - Hair length: cut to chin-length classic bob
 - Clean, blunt ends with slight inward curve
-- Hair should frame the face elegantly
-- Maintain natural volume appropriate to their hair type
-- Style should look polished and intentional
+- Hair frames the face elegantly
+- Maintain natural volume for their hair type
 
-The result must be photorealistic and look like an actual salon before/after photo.
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair length/style changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   lob: `
-Transform this photo to show a long bob (lob) haircut.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with a long bob (lob) haircut.
 
-ONLY CHANGE:
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+
+ONLY MODIFY:
 - Hair length: cut to shoulder-length or just past shoulders
 - Slightly longer in front, shorter in back (subtle angle)
-- Soft, blended ends (not blunt)
+- Soft, blended ends
 - Effortless, modern silhouette
-- Style should look chic and low-maintenance
 
-The result must be photorealistic and look like an actual salon before/after photo.
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair length/style changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   layers: `
-Transform this photo to show a layered haircut.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Overall hair LENGTH should remain similar (layers, not a chop)
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with layered hair.
 
-ONLY CHANGE:
-- Add face-framing layers around the face
-- Add movement and dimension throughout with varied lengths
-- Layers should blend seamlessly, not look choppy
-- Create natural volume and body
-- Ends should look soft and textured
-- Maintain their natural texture while adding shape
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+- The overall hair LENGTH - keep similar length
 
-The result must be photorealistic and look like an actual salon before/after photo.
+ONLY MODIFY:
+- Add face-framing layers
+- Add movement and dimension with varied lengths throughout
+- Layers blend seamlessly
+- Ends look soft and textured
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair style changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   bangs: `
-Transform this photo to show the addition of bangs/fringe.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair LENGTH (except for the new bangs) must remain EXACTLY the same
-- Hair TEXTURE must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with bangs/fringe added.
 
-ONLY CHANGE:
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+- The hair LENGTH (except for the new bangs)
+
+ONLY MODIFY:
 - Add flattering bangs/fringe that suit their face shape
-- Bangs should be soft and face-framing (curtain bangs or soft fringe)
-- Bangs should blend naturally into the rest of their hair
-- Length should hit around eyebrows or be slightly parted
-- Style should look intentional and professionally cut
+- Soft, face-framing style (curtain bangs or soft fringe)
+- Bangs blend naturally into rest of hair
+- Length around eyebrows or slightly parted
 
-The result must be photorealistic and look like an actual salon before/after photo.
-`
-};
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only the addition of bangs changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
+`,
 
-// Hair Texture Prompts
-export const hairTexturePrompts: Record<string, string> = {
+  // TEXTURE
   waves: `
-Transform this photo to show beach waves styling.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair LENGTH must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with beach waves styling.
 
-ONLY CHANGE:
-- Style hair into loose, effortless beach waves
-- Waves should look natural and relaxed, not overly styled
-- Soft bends starting from mid-length, not from roots
-- Volume should look natural and touchable
-- Hair should look healthy with natural shine
-- Overall vibe: "woke up like this" effortless beauty
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+- The hair LENGTH - must remain exactly the same
 
-The result must be photorealistic and look like an actual salon styling photo.
+ONLY MODIFY:
+- Hair texture: style into loose, effortless beach waves
+- Waves look natural and relaxed
+- Soft bends starting from mid-length
+- Volume looks natural and touchable
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair texture changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   straight: `
-Transform this photo to show sleek, straight styling.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair LENGTH must remain EXACTLY the same
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with sleek, straight hair styling.
 
-ONLY CHANGE:
-- Style hair to be perfectly sleek and straight
-- Hair should be smooth from root to tip, no frizz or flyaways
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+- The hair LENGTH - must remain exactly the same
+
+ONLY MODIFY:
+- Hair texture: perfectly sleek and straight
+- Smooth from root to tip, no frizz
 - High shine, glass-like finish
-- Hair should lay flat and polished
-- Ends should be smooth and healthy-looking
-- Overall vibe: polished, sophisticated, salon-fresh
+- Hair lays flat and polished
 
-The result must be photorealistic and look like an actual salon styling photo.
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair texture changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   curls: `
-Transform this photo to show bouncy curls styling.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair LENGTH must remain EXACTLY the same (curls will make it appear shorter)
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with bouncy curls styling.
 
-ONLY CHANGE:
-- Style hair into defined, bouncy curls
-- Curls should be uniform and well-defined
-- Volume should be lifted, especially at the crown
-- Curls should look soft and touchable, not crunchy
-- Natural shine and healthy appearance
-- Overall vibe: glamorous, voluminous, styled for an event
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+- The hair LENGTH - must remain the same (curls may make it appear slightly shorter)
 
-The result must be photorealistic and look like an actual salon styling photo.
+ONLY MODIFY:
+- Hair texture: defined, bouncy curls
+- Curls are uniform and well-defined
+- Volume lifted, especially at crown
+- Curls look soft and touchable, not crunchy
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair texture changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `,
 
   volume: `
-Transform this photo to show a volume boost styling.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- The person's face, skin, eyes, and all facial features must remain EXACTLY identical
-- Facial structure, makeup, and expression must remain EXACTLY identical
-- Background must remain EXACTLY identical
-- Lighting conditions and photo quality must match the original
-- Hair COLOR must remain EXACTLY the same
-- Hair LENGTH must remain EXACTLY the same
-- Hair TEXTURE (straight, wavy, curly) should remain similar, just fuller
-- Clothing and accessories must remain EXACTLY identical
+TASK: Show this person with a volume boost styling.
 
-ONLY CHANGE:
-- Add significant volume and body to the hair
-- Lift at the roots, especially at the crown
-- Hair should look fuller and thicker throughout
-- Maintain their natural texture, just amplified
-- Hair should look bouncy and full of movement
-- Overall vibe: "big hair don't care" confidence
+ABSOLUTELY DO NOT CHANGE:
+- The person's face - must be EXACTLY the same person with identical facial features
+- The person's skin tone, makeup, expression
+- The background - must be EXACTLY identical
+- The person's clothing and accessories
+- The pose and body position
+- The camera angle and framing
+- The lighting conditions
+- The hair COLOR - must remain exactly the same
+- The hair LENGTH - must remain exactly the same
+- The hair TEXTURE (straight/wavy/curly) - keep similar, just fuller
 
-The result must be photorealistic and look like an actual salon blowout photo.
+ONLY MODIFY:
+- Add significant volume and body
+- Lift at roots, especially at crown
+- Hair looks fuller and thicker throughout
+- Bouncy and full of movement
+
+CRITICAL: The output must show THE SAME PERSON in THE SAME SETTING. Only their hair volume changes. If I showed the before and after to someone, they must instantly recognize it as the same person in the same photo.
 `
-};
-
-// Combined export with all hair prompts
-export const hairPrompts: Record<string, string> = {
-  // Color
-  balayage: hairColorPrompts.balayage,
-  blonde: hairColorPrompts.blonde,
-  brunette: hairColorPrompts.brunette,
-  auburn: hairColorPrompts.auburn,
-
-  // Cut
-  bob: hairCutPrompts.bob,
-  lob: hairCutPrompts.lob,
-  layers: hairCutPrompts.layers,
-  bangs: hairCutPrompts.bangs,
-
-  // Texture
-  waves: hairTexturePrompts.waves,
-  straight: hairTexturePrompts.straight,
-  curls: hairTexturePrompts.curls,
-  volume: hairTexturePrompts.volume,
 };
 
 // Default prompt (for backwards compatibility)

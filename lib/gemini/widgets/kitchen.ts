@@ -1,99 +1,109 @@
+// Kitchen Prompts - Fixed for accurate image editing
 export const kitchenPrompts: Record<string, string> = {
+
   modern: `
-Transform this kitchen to show a modern style renovation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- Room dimensions and layout must remain EXACTLY identical
-- Window positions and sizes must remain EXACTLY identical
-- Door positions must remain EXACTLY identical
-- Ceiling height and structure must remain EXACTLY identical
-- Floor plan and traffic flow must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Lighting conditions must match the original
+TASK: Remodel this kitchen to modern style.
 
-ONLY CHANGE:
-- Cabinets: flat-panel or slab doors, handleless or minimal bar pulls, white/gray/navy colors
-- Countertops: quartz or solid surface in white/gray tones
-- Backsplash: large format tiles or seamless material
-- Appliances: stainless steel, integrated/panel-ready where possible
-- Hardware: minimal, modern pulls or push-to-open
-- Lighting: recessed lights, linear pendants over island
-- Clean, uncluttered surfaces
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The room dimensions and layout
+- The position of windows and doors
+- The floor plan and where walls are
+- The ceiling height and shape
+- The overall lighting direction
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual kitchen renovation photo.
+ONLY REPLACE/MODIFY:
+- Cabinets → modern flat-panel style in white, gray, or navy
+- Countertops → quartz or solid surface in light color
+- Backsplash → clean subway tile or simple modern tile
+- Appliances → stainless steel, in their CURRENT POSITIONS
+- Hardware → modern bar pulls or minimal handles
+- Light fixtures → modern pendants if visible
+- Remove clutter from counters for clean look
+
+CRITICAL: This must be recognizable as THE SAME KITCHEN from THE SAME ANGLE. The layout is identical - only the finishes and style change. Someone familiar with this kitchen must recognize the space.
 `,
 
   traditional: `
-Transform this kitchen to show a traditional style renovation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- Room dimensions and layout must remain EXACTLY identical
-- Window positions and sizes must remain EXACTLY identical
-- Door positions must remain EXACTLY identical
-- Ceiling height and structure must remain EXACTLY identical
-- Floor plan and traffic flow must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Lighting conditions must match the original
+TASK: Remodel this kitchen to traditional style.
 
-ONLY CHANGE:
-- Cabinets: shaker-style doors with visible frames, warm white or cream color
-- Countertops: granite or marble with natural veining
-- Backsplash: subway tiles or classic patterns
-- Appliances: stainless steel or panel-matched
-- Hardware: classic cup pulls, knobs in brushed nickel or brass
-- Lighting: traditional pendants, under-cabinet lighting
-- Crown molding on cabinets
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The room dimensions and layout
+- The position of windows and doors
+- The floor plan and where walls are
+- The ceiling height and shape
+- The overall lighting direction
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual kitchen renovation photo.
+ONLY REPLACE/MODIFY:
+- Cabinets → traditional raised-panel style in warm white or wood tone
+- Countertops → granite or marble with movement
+- Backsplash → classic subway tile or decorative tile
+- Appliances → panel-ready or stainless, in their CURRENT POSITIONS
+- Hardware → traditional cup pulls and knobs
+- Add crown molding to cabinets if appropriate
+- Remove clutter from counters
+
+CRITICAL: This must be recognizable as THE SAME KITCHEN from THE SAME ANGLE. The layout is identical - only the finishes and style change. Someone familiar with this kitchen must recognize the space.
 `,
 
   farmhouse: `
-Transform this kitchen to show a farmhouse style renovation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- Room dimensions and layout must remain EXACTLY identical
-- Window positions and sizes must remain EXACTLY identical
-- Door positions must remain EXACTLY identical
-- Ceiling height and structure must remain EXACTLY identical
-- Floor plan and traffic flow must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Lighting conditions must match the original
+TASK: Remodel this kitchen to farmhouse style.
 
-ONLY CHANGE:
-- Cabinets: shaker or beadboard style in white, some open shelving
-- Countertops: butcher block or white marble
-- Backsplash: white subway tiles with dark grout
-- Sink: farmhouse apron-front sink
-- Appliances: stainless steel or retro-styled
-- Hardware: black iron or antique brass pulls
-- Lighting: industrial pendants, lantern-style fixtures
-- Add warmth: wood cutting boards, plants, glass jars
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The room dimensions and layout
+- The position of windows and doors
+- The floor plan and where walls are
+- The ceiling height and shape
+- The overall lighting direction
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual kitchen renovation photo.
+ONLY REPLACE/MODIFY:
+- Cabinets → shaker style in white or soft sage/blue
+- Countertops → butcher block or light quartz
+- Backsplash → white subway tile or beadboard
+- Appliances → white or stainless, in their CURRENT POSITIONS
+- Hardware → black iron or antique brass
+- Sink → farmhouse apron sink if sink is visible
+- Add open shelving if appropriate
+- Remove clutter, add minimal farmhouse decor
+
+CRITICAL: This must be recognizable as THE SAME KITCHEN from THE SAME ANGLE. The layout is identical - only the finishes and style change. Someone familiar with this kitchen must recognize the space.
 `,
 
   luxury: `
-Transform this kitchen to show a luxury style renovation.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- Room dimensions and layout must remain EXACTLY identical
-- Window positions and sizes must remain EXACTLY identical
-- Door positions must remain EXACTLY identical
-- Ceiling height and structure must remain EXACTLY identical
-- Floor plan and traffic flow must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Lighting conditions must match the original
+TASK: Remodel this kitchen to luxury style.
 
-ONLY CHANGE:
-- Cabinets: dark wood or deep navy/black, floor-to-ceiling, custom look
-- Countertops: thick marble slab with dramatic veining, waterfall edges
-- Backsplash: full-height marble or statement tile
-- Appliances: professional-grade, integrated panels, built-in coffee/wine
-- Hardware: high-end brass or polished nickel, substantial size
-- Lighting: designer statement pendants, layered lighting
-- Add luxury touches: pot filler, double islands if space permits
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The room dimensions and layout
+- The position of windows and doors
+- The floor plan and where walls are
+- The ceiling height and shape
+- The overall lighting direction
+- The image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual high-end kitchen renovation photo.
+ONLY REPLACE/MODIFY:
+- Cabinets → high-end custom look in rich color (navy, emerald, or warm wood)
+- Countertops → marble, quartzite, or premium stone with veining
+- Backsplash → marble slab or high-end tile
+- Appliances → professional-grade stainless or integrated panels, in their CURRENT POSITIONS
+- Hardware → polished brass, gold, or premium nickel
+- Fixtures → high-end faucet and lighting
+- Remove all clutter, style with minimal luxury accessories
+
+CRITICAL: This must be recognizable as THE SAME KITCHEN from THE SAME ANGLE. The layout is identical - only the finishes and style change. Someone familiar with this kitchen must recognize the space.
 `
 };
 

@@ -1,100 +1,161 @@
+// Landscaping Prompts - Fixed for accurate image editing
 export const landscapingPrompts: Record<string, string> = {
+
   manicured: `
-Transform this yard to show a manicured lawn landscaping result.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- House structure must remain EXACTLY identical (siding, windows, doors, roof)
-- Driveway must remain EXACTLY identical (position, material, shape)
-- Property boundaries and dimensions must remain EXACTLY identical
-- Any permanent hardscape (concrete paths, retaining walls) must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Sky and lighting conditions must match the original
-- Neighboring properties must remain unchanged
+TASK: Transform this yard to show a manicured lawn result.
 
-ONLY CHANGE:
-- Lawn: lush, green, evenly cut grass throughout
-- Edges: clean, defined borders between lawn and beds
-- Foundation plantings: neat shrubs and bushes along house
-- Trees: healthy, well-maintained if existing, or add appropriate shade trees
-- Minimal flower beds with simple, organized plantings
-- Clean, edged walkways
-- Overall: tidy, well-maintained, classic suburban appearance
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The house - same structure, color, windows, doors, everything
+- The driveway - same position, material, shape
+- Property boundaries and fence positions
+- The sky and weather conditions
+- Neighboring properties if visible
+- The overall image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual landscaping project completion photo.
+ONLY MODIFY THE LANDSCAPING:
+- Lawn → lush, green, perfectly manicured grass
+- Remove all debris, dead plants, weeds, clutter
+- Edge beds and lawn borders crisply
+- Existing trees and large shrubs → healthy, trimmed versions
+- Garden beds → neat, mulched, well-maintained
+- Driveway/walkways → clean and clear
+
+CRITICAL: This must be recognizable as THE SAME PROPERTY from THE SAME ANGLE. The house and hardscape are identical - only the lawn and plants change. Someone who lives here must recognize their home.
 `,
 
   garden: `
-Transform this yard to show a garden oasis landscaping result.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- House structure must remain EXACTLY identical (siding, windows, doors, roof)
-- Driveway must remain EXACTLY identical (position, material, shape)
-- Property boundaries and dimensions must remain EXACTLY identical
-- Any permanent hardscape (concrete paths, retaining walls) must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Sky and lighting conditions must match the original
-- Neighboring properties must remain unchanged
+TASK: Transform this yard to show a garden oasis result.
 
-ONLY CHANGE:
-- Add layered garden beds with variety of plants at different heights
-- Include colorful flowering plants (perennials, annuals)
-- Add ornamental grasses and textural plants
-- Include flowering shrubs and small ornamental trees
-- Add garden paths (stepping stones, mulched paths)
-- Include garden accents (birdbath, garden art, decorative stones)
-- Lush, abundant, cottage-garden feel
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The house - same structure, color, windows, doors, everything
+- The driveway - same position, material, shape
+- Property boundaries and fence positions
+- The sky and weather conditions
+- Neighboring properties if visible
+- The overall image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual landscaping project completion photo.
+ONLY MODIFY THE LANDSCAPING:
+- Lawn → healthy green grass where appropriate
+- Add flowering plants and colorful garden beds
+- Add mature shrubs and ornamental plants
+- Include variety: perennials, annuals, ornamental grasses
+- Add garden paths if space allows
+- Remove all debris, dead plants, weeds, clutter
+- Create layered, abundant planting design
+
+CRITICAL: This must be recognizable as THE SAME PROPERTY from THE SAME ANGLE. The house and hardscape are identical - only the landscaping changes. Someone who lives here must recognize their home.
+`,
+
+  // Alias for garden_oasis
+  garden_oasis: `
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
+
+TASK: Transform this yard to show a garden oasis result.
+
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The house - same structure, color, windows, doors, everything
+- The driveway - same position, material, shape
+- Property boundaries and fence positions
+- The sky and weather conditions
+- Neighboring properties if visible
+- The overall image dimensions and aspect ratio
+
+ONLY MODIFY THE LANDSCAPING:
+- Lawn → healthy green grass where appropriate
+- Add flowering plants and colorful garden beds
+- Add mature shrubs and ornamental plants
+- Include variety: perennials, annuals, ornamental grasses
+- Add garden paths if space allows
+- Remove all debris, dead plants, weeds, clutter
+- Create layered, abundant planting design
+
+CRITICAL: This must be recognizable as THE SAME PROPERTY from THE SAME ANGLE. The house and hardscape are identical - only the landscaping changes. Someone who lives here must recognize their home.
 `,
 
   modern: `
-Transform this yard to show a modern minimal landscaping result.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- House structure must remain EXACTLY identical (siding, windows, doors, roof)
-- Driveway must remain EXACTLY identical (position, material, shape)
-- Property boundaries and dimensions must remain EXACTLY identical
-- Any permanent hardscape (concrete paths, retaining walls) must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Sky and lighting conditions must match the original
-- Neighboring properties must remain unchanged
+TASK: Transform this yard to show a modern minimal landscape result.
 
-ONLY CHANGE:
-- Clean geometric lawn shapes or artificial turf sections
-- Gravel or decomposed granite areas with defined edges
-- Architectural plants: ornamental grasses, agaves, sculptural shrubs
-- Concrete or large format paver pathways
-- Minimalist planting in neat rows or clusters
-- Modern planters (corten steel, concrete)
-- Landscape lighting (uplights, path lights)
-- Overall: clean lines, intentional negative space, contemporary feel
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The house - same structure, color, windows, doors, everything
+- The driveway - same position, material, shape
+- Property boundaries and fence positions
+- The sky and weather conditions
+- Neighboring properties if visible
+- The overall image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual landscaping project completion photo.
+ONLY MODIFY THE LANDSCAPING:
+- Lawn → clean, minimal lawn area or artificial turf
+- Add architectural plants: ornamental grasses, agaves, boxwood
+- Include hardscape: gravel, pavers, concrete stepping stones
+- Clean lines and geometric shapes
+- Remove all clutter and debris
+- Minimal but intentional plant selection
+- Emphasis on structure and negative space
+
+CRITICAL: This must be recognizable as THE SAME PROPERTY from THE SAME ANGLE. The house and hardscape are identical - only the landscaping changes. Someone who lives here must recognize their home.
+`,
+
+  // Alias for modern_minimal
+  modern_minimal: `
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
+
+TASK: Transform this yard to show a modern minimal landscape result.
+
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The house - same structure, color, windows, doors, everything
+- The driveway - same position, material, shape
+- Property boundaries and fence positions
+- The sky and weather conditions
+- Neighboring properties if visible
+- The overall image dimensions and aspect ratio
+
+ONLY MODIFY THE LANDSCAPING:
+- Lawn → clean, minimal lawn area or artificial turf
+- Add architectural plants: ornamental grasses, agaves, boxwood
+- Include hardscape: gravel, pavers, concrete stepping stones
+- Clean lines and geometric shapes
+- Remove all clutter and debris
+- Minimal but intentional plant selection
+- Emphasis on structure and negative space
+
+CRITICAL: This must be recognizable as THE SAME PROPERTY from THE SAME ANGLE. The house and hardscape are identical - only the landscaping changes. Someone who lives here must recognize their home.
 `,
 
   outdoor_living: `
-Transform this yard to show an outdoor living space landscaping result.
+You are an IMAGE EDITOR. You must EDIT the provided photo, NOT generate a new image.
 
-STRICT PRESERVATION REQUIREMENTS:
-- House structure must remain EXACTLY identical (siding, windows, doors, roof)
-- Driveway must remain EXACTLY identical (position, material, shape)
-- Property boundaries and dimensions must remain EXACTLY identical
-- Any permanent hardscape (concrete paths, retaining walls) must remain EXACTLY identical
-- Perspective and photo angle must remain EXACTLY identical
-- Sky and lighting conditions must match the original
-- Neighboring properties must remain unchanged
+TASK: Transform this yard to show an outdoor living space result.
 
-ONLY CHANGE:
-- Add patio or deck area with outdoor furniture (dining set, lounge seating)
-- Include fire pit or outdoor fireplace if space allows
-- Add string lights or landscape lighting
-- Include outdoor kitchen elements or BBQ area if appropriate
-- Privacy plantings (hedges, tall grasses) where needed
-- Healthy lawn areas for open space
-- Container plants and planters on patio
-- Overall: entertainment-ready, livable outdoor extension of home
+ABSOLUTELY DO NOT CHANGE:
+- The camera angle and perspective - must be EXACTLY the same viewpoint
+- The house - same structure, color, windows, doors, everything
+- The driveway - same position, material, shape
+- Property boundaries and fence positions
+- The sky and weather conditions
+- Neighboring properties if visible
+- The overall image dimensions and aspect ratio
 
-The result must be photorealistic and look like an actual landscaping project completion photo.
+ONLY MODIFY THE LANDSCAPING:
+- Lawn → healthy, maintained grass
+- Add patio or deck area appropriate to space
+- Include outdoor furniture: seating, dining area
+- Add ambient elements: string lights, fire pit, planters
+- Healthy plants framing the outdoor living space
+- Remove all debris, dead plants, clutter
+- Create inviting, livable outdoor space
+
+CRITICAL: This must be recognizable as THE SAME PROPERTY from THE SAME ANGLE. The house is identical - only the yard and landscaping change. Someone who lives here must recognize their home.
 `
 };
 
